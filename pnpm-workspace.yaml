@@ -1,0 +1,3 @@
+packages:
+  - 'murdock-core'
+  - 'murdock-react'
