@@ -11,34 +11,32 @@ export type SelectProps = {
 export type SelectState = {
     searchResults?: any[];
     fetching: boolean;
+
 }
 
 
-export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (props, { useEffect, useRef, useState, render }) => {
-    const abortController = useRef(new AbortController());
-    const [searchResults, setSearchResults] = useState<any[]>([]);
-    const [fetching, setFetching] = useState(false);
-
-    useEffect(() => {
+export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (props, sm) => {
+    const abortController = sm.getRef('abortController', new AbortController());
+    sm.onPropsChanged(["value"], (props, _state, setState) => {
         async function handleSearch() {
             if (props.searchFunction === undefined) {
                 return;
             }
             console.log("searching", props.value);
-            setFetching(true);
+            setState({ 'fetching': true });
             await wait(props.debounce ?? 100);
             if (abortController.current.signal.aborted) {
+                // Our closure over 'value' is now stale, so we don't want to use it.
                 return;
             }
 
             try {
                 if (props.value) {
                     const results = await props.searchFunction(props.value.toString(), abortController.current);
-                    setSearchResults(results);
-                    setFetching(false);
+                    setState({ searchResults: results, fetching: false });
                 }
             } catch (e) {
-                setFetching(false);
+                setState({ 'fetching': false });
 
             }
         }
@@ -46,11 +44,10 @@ export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (pro
         abortController.current = new AbortController();
 
         handleSearch();
-    }, [props.value, setFetching, setSearchResults, props.searchFunction, props.debounce]);
+    });
 
-    render();
 
-    return { fetching, searchResults };
+    return sm.setProps(props)
 
 }
 
