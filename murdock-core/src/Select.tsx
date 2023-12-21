@@ -1,56 +1,59 @@
+import { HeadlessComponent, wait } from "./index.js";
 
-import { ComponentProps } from 'preact';
-import register from 'preact-custom-element';
-import { useEffect, useRef, useState } from 'preact/hooks';
-import classNames from 'classnames';
 
 export type SelectProps = {
     searchFunction?: (value: string, abortController: AbortController) => Promise<any[]>;
     debounce?: number;
+    value?: string;
+    setValue?: (value: string) => void;
 }
 
-type LocalSelectProps = ComponentProps<"input"> & SelectProps
+export type SelectState = {
+    searchResults?: any[];
+    fetching: boolean;
+}
 
-const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-const SelectComponent = ({ value, searchFunction, onChange, debounce = 200, ...props }: LocalSelectProps) => {
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+
+export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (props, { useEffect, useRef, useState, render }) => {
     const abortController = useRef(new AbortController());
+    const [searchResults, setSearchResults] = useState<any[]>([]);
     const [fetching, setFetching] = useState(false);
 
     useEffect(() => {
         async function handleSearch() {
-            if (!searchFunction) {
+            if (props.searchFunction === undefined) {
                 return;
             }
-            console.log("searching", value);
+            console.log("searching", props.value);
             setFetching(true);
-            await wait(debounce);
+            await wait(props.debounce ?? 100);
             if (abortController.current.signal.aborted) {
-                // Our closure over 'value' is now stale, so we don't want to use it.
                 return;
             }
+
             try {
-                const results = await searchFunction(value.toString(), abortController.current);
-                setSearchResults(results);
+                if (props.value) {
+                    const results = await props.searchFunction(props.value.toString(), abortController.current);
+                    setSearchResults(results);
+                    setFetching(false);
+                }
+            } catch (e) {
                 setFetching(false);
-            }
-            catch (e) {
-                setFetching(false);
+
             }
         }
         abortController.current.abort();
         abortController.current = new AbortController();
+
         handleSearch();
+    }, [props.value, setFetching, setSearchResults, props.searchFunction, props.debounce]);
 
-    }, [value]);
+    render();
 
-    return (
-        <>
-            <input className={classNames({ 'murdock-select-fetching': fetching })} {...props} value={value} onChange={onChange}> </input >
-            {searchResults.map(item => <h2>{item}</h2>)}
-        </>
-    );
+    return { fetching, searchResults };
 
 }
 
-register(SelectComponent, 'murdock-select', ['searchFunction', 'value', 'onChange', 'onInput']);
+
+
+
