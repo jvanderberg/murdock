@@ -1,11 +1,11 @@
 import { SelectComponent, SelectProps } from 'murdock-core';
 import { FormEvent } from 'react';
-import { useManagedComponent } from './index.ts';
+import { useHeadlessComponent, } from './index.ts';
 
 type LocalSelectProps = SelectProps & { onInput: (e: FormEvent<HTMLInputElement>) => void }
 
 export const Select2 = ({ searchFunction, onInput, value }: LocalSelectProps) => {
-    const state = useManagedComponent(SelectComponent, { searchFunction, value });
+    const state = useHeadlessComponent(SelectComponent, { searchFunction, value, debounce: 1000 });
     return (
         <>
             <input value={value} style={{ backgroundColor: state.fetching ? 'red' : 'green' }} onInput={onInput} />

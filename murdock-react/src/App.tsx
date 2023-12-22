@@ -6,7 +6,7 @@ import { Card } from './Card'
 import { Select2 } from './Select2.tsx'
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const search = async (value: string, abortController: AbortController) => {
-    await wait(1000);
+    await wait(100);
     if (abortController.signal.aborted) {
         throw new Error("Aborted");
     }

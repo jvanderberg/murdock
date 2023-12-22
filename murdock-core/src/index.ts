@@ -10,9 +10,9 @@ export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, m
 
 type Hooks = { 
     useState: <T>(initial: T) => [T, (state: T) => void], 
-    useRef: <T>(initial: T) => { current: T }, 
+    useRef: <T>(initial?: T) => { current: T | undefined }, 
     useEffect: (cb: () => void, deps: any[]) => void 
-    render: () => void
+
 }
 
 export const getHooks = (sm : StateManager) : Hooks => {
@@ -20,32 +20,40 @@ export const getHooks = (sm : StateManager) : Hooks => {
         useState: sm.useState.bind(sm),
         useRef: sm.useRef.bind(sm),
         useEffect: sm.useEffect.bind(sm),
-        render: sm.render.bind(sm)
+
     }
 }
 export class StateManager {
-    // private state: S;
     private onStateChanged: () => void;
-    // private props: P;
-    // private refs: any = {};
-    // private changeWatchers: ((props: P) => void)[] = [];
-    // private newState: S;
-    // private settingProps = false;
-    private dirty = false;
-    private isRendering = false;
     private storage: {value: unknown, setter: (val: unknown)=> void}[] = []
-
+    private destroyed = false;
+    private inCallback = false;
+    private inRender = false;
     constructor( onStateChanged: () => void) {
-  
-        // this.props = props;
-        // this.newState = state;
         this.onStateChanged = onStateChanged;
     }
+    
+    destroy = () => {
+        this.storage = [];
+        this.onStateChanged = () => {};
+        this.destroyed = true;
+    }
+
     private pointer = 0;
 
     useState = <T>(initial: T) : [T, (state:T)=> void]=> {
+        if (!this.inRender) {
+            throw new Error("Cannot call useState outside of the component body render function. Likely you have some async code that called useState.");
+        }
+        if (this.inCallback) {
+            throw new Error("Cannot call useState inside a useEffect callback");
+        }
         const p = this.pointer;
         const setValue = (newState: T) => { 
+            if (this.destroyed) {
+                // Some async code may still be running after the component is destroyed, ignore state updates.
+                return;
+            }
             const current = this.storage[p].value as T;
             if (current === newState) {
                 return;
@@ -66,112 +74,49 @@ export class StateManager {
         return [state, setter] as const;
     }
 
-    useRef = <T,>(initial: T): { current: T } => {
+    useRef = <T,>(initial?: T): { current: T | undefined} => {
         const ref = this.useState({ current: initial })[0];
         return ref;
     }
 
     useEffect = (cb: () => void, deps: any[]) => {
+
+        // If this is the first time we are called, trigger the effect, because we have no deps to compare against.
+        let trigger = this.storage[this.pointer] === undefined;
+        
         const [lastDeps] = this.useState(deps);
         if (lastDeps.length !== deps.length) {  
             throw new Error("useEffect deps must be a fixed length array");
-        } 
-        for (let i = 0; i < deps.length; i++) {
-            if (lastDeps[i] !== deps[i]) {
-                cb();
-                try {
-                    this.storage[this.pointer - 1].value = deps;
-                } catch (e) {
-                    console.log(e);
-                }
-                break;
-            }
-        }  
-    }
-
-    render = () => {
-        if (this.dirty) {
-            this.dirty = false;
-            this.onStateChanged();
         }
-        this.pointer = 0;
+        if (!trigger) {
+            for (let i = 0; i < deps.length; i++) {
+                if (lastDeps[i] !== deps[i]) {
+                    trigger = true;
+                    break;
+                } 
+            }  
+        }
+        if (trigger) {
+            // setTimeout(() => {
+                this.inCallback = true;
+                cb();
+                this.inCallback = false;
+            // }, 0);
+            try {
+                this.storage[this.pointer - 1].value = deps;
+            } catch (e) {
+                console.log(e);
+            }
+        }
     }
 
-    // setProps = (props: P) : S => {
-    //     this.settingProps = true;
-
-    //     const p = Object.freeze({ ...props });
-    //     for (const watcher of this.changeWatchers) {
-    //         // Watchers can mutate the new state, but each watcher only sees the current state.
-    //         watcher(p);
-    //     }
-
-    //     // See if state has changed after all the watchers have run.
-    //     for (const key of Object.keys(this.newState) as (keyof S)[]) {
-    //         if (this.newState[key] !== this.state[key]) { 
-    //             // Shallow equality check, trigger on first difference
-    //             this.state = Object.freeze({ ...this.newState });
-    //             this.onStateChanged(this.state);
-    //             break;
-    //         }
-    //     }
-    //     this.props = p;
-    //     this.changeWatchers = [];
-    //     this.settingProps = false;
-    //     this.pointer = 0;
-    //     return this.state;
-
-    // }
-
-    // onPropsChanged = (keys: (keyof P)[], cb: (props: P, state: S, setState: (args: PieceState<S>) => void) => void) => {
-    //     this.changeWatchers.push((props: P) => {
-    //         let trigger = keys.length === 0;
-    //         for (const key of keys) {
-    //             if (props[key] !== this.props[key]) {
-    //                 trigger = true;
-    //                 break;
-    //             }
-    //         }
-    //         if (trigger) {
-    //             cb(props, this.state, this.setState);
-    //         }
-    //     });
-    // };
-
-
-
-    // /**
-    //  * Accumulates state changes and then sets them all at once.
-    //  * @param args 
-    //  * @returns 
-    //  */
-    // private setState = (args: { [Key in keyof S]?: S[Key] }): void => {
-
-    //     const keys = Object.keys(args) as (keyof S)[];
-
-    //     keys.forEach(key => {
-    //         if (args[key] === undefined || key === undefined) {
-    //             return;
-    //         }
-
-    //         this.newState[key] = args[key] as S[keyof S];
-
-    //     })
-    //     if (!this.settingProps) {
-    //         // If we aren't currently setting props, then this has been called async, and we need to schedule a new render.
-    //         this.state = Object.freeze({ ...this.newState });
-    //         this.onStateChanged(this.state);
-    //     }
-    // }
-
-
-    // getRef = <T,>(name: string, initial: T): { current: T } => {
-    //     if (!this.refs[name]) {
-    //         this.refs[name] = { current: initial };
-    //     }
-    //     return this.refs[name];
-    // }
-
+    render = <S extends Record<string, unknown>,P extends Record<string, unknown>>(component: HeadlessComponent<S,P>, props: P) : S => {
+        this.pointer = 0;
+        this.inRender = true;
+        const state = component(props, getHooks(this));
+        this.inRender = false;
+        return state;
+    }
 
 }
 

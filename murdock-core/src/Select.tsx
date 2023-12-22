@@ -14,41 +14,48 @@ export type SelectState = {
 }
 
 
-export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (props, { useEffect, useRef, useState, render }) => {
+export const SelectComponent: HeadlessComponent<SelectState, SelectProps> = (props, { useEffect, useRef, useState }) => {
     const abortController = useRef(new AbortController());
+    const timer = useRef<ReturnType<typeof setTimeout>>();
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [fetching, setFetching] = useState(false);
 
     useEffect(() => {
-        async function handleSearch() {
-            if (props.searchFunction === undefined) {
-                return;
-            }
-            console.log("searching", props.value);
-            setFetching(true);
-            await wait(props.debounce ?? 100);
-            if (abortController.current.signal.aborted) {
-                return;
-            }
 
-            try {
-                if (props.value) {
-                    const results = await props.searchFunction(props.value.toString(), abortController.current);
-                    setSearchResults(results);
+        if (timer.current) {
+            clearTimeout(timer.current);
+        }
+        timer.current = setTimeout(() => {
+            abortController.current?.abort();
+            setFetching(false);
+            abortController.current = new AbortController();
+            const ab = abortController.current;
+            async function handleSearch() {
+                if (props.searchFunction == undefined) {
+                    return;
+                }
+                if (!props.value) {
+                    setSearchResults([]);
+                    return;
+                }
+
+                try {
+                    if (props.value) {
+                        setFetching(true);
+                        const results = await props.searchFunction(props.value.toString(), ab as AbortController);
+                        setFetching(false);
+                        if (!ab?.signal.aborted) {
+                            setSearchResults(results);
+                        }
+                    }
+                } catch (e) {
                     setFetching(false);
                 }
-            } catch (e) {
-                setFetching(false);
-
             }
-        }
-        abortController.current.abort();
-        abortController.current = new AbortController();
+            handleSearch();
+        }, props.debounce ?? 100);
 
-        handleSearch();
-    }, [props.value, setFetching, setSearchResults, props.searchFunction, props.debounce]);
-
-    render();
+    }, [props.value, props.searchFunction, setSearchResults, setFetching, props.debounce]);
 
     return { fetching, searchResults };
 
