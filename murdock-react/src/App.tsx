@@ -21,7 +21,7 @@ function App() {
     console.log(searchValue);
     return (
         <>
-            <Select2 value={searchValue} onInput={(e) => setSearchValue(e.currentTarget.value)} searchFunction={search} />
+            <Select2 search={searchValue} setSearch={setSearchValue} searchFunction={search} />
             {/* <Button border={border} label={label} onClick={() => { setBorder(!border) }} /> */}
             <div>
                 <Card title="Hello" description="World" />

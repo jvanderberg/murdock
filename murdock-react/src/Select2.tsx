@@ -2,14 +2,17 @@ import { SelectComponent, SelectProps } from 'murdock-core';
 import { FormEvent } from 'react';
 import { useHeadlessComponent, } from './index.ts';
 
-type LocalSelectProps = SelectProps & { onInput: (e: FormEvent<HTMLInputElement>) => void }
+type LocalSelectProps = SelectProps<string> & { onInput: (e: FormEvent<HTMLInputElement>) => void }
 
-export const Select2 = ({ searchFunction, onInput, value }: LocalSelectProps) => {
-    const state = useHeadlessComponent(SelectComponent, { searchFunction, value, debounce: 1000 });
+export const Select2 = ({ searchFunction, search, setSearch }: LocalSelectProps) => {
+    const state = useHeadlessComponent(SelectComponent<string>, { searchFunction, debounce: 1000 });
     return (
         <>
-            <input value={value} style={{ backgroundColor: state.fetching ? 'red' : 'green' }} onInput={onInput} />
-            {state.searchResults?.map(item => <h2>{item}</h2>)}
+            <input value={state.search} onBlur={() => state.setFocused(false)} onFocus={() => state.setFocused(true)} style={{ backgroundColor: state.fetching ? 'red' : 'green' }} onInput={(e) => state.setSearch(e.currentTarget.value)} />
+            {state.open && <div id="menu">
+                {state.searchResults?.map(item => <h2>{item}</h2>)}
+            </div>
+            }
         </>
     )
 }
