@@ -45,12 +45,10 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
     const [focused, setFocused] = useState(false, props.focused, props.setFocused);
     const [open, setOpen] = useState(false, props.open, props.setOpen);
 
-
     useEffect(() => {
         if (focused) {
             setOpen(true);
         } else {
-            setSearchResults([]);
             setOpen(false);
         }
     }, [focused]);

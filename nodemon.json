@@ -1,0 +1,11 @@
+{
+    "signal": "SIGHUP",
+    "watch": [
+        "murdock-core/src",
+        "murdock-react/src"
+    ],
+    "ignore": [
+        "**/vite.config.ts.timestamp*.mjs"
+    ],
+    "ext": "ts,tsx,json"
+}

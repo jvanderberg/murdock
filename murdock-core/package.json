@@ -18,8 +18,7 @@
     "types": "./dist/index.d.ts",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "types": "tsc --emitDeclarationOnly",
+        "build": "vite build && tsc --emitDeclarationOnly",
         "preview": "vite preview"
     },
     "dependencies": {

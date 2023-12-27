@@ -29,6 +29,7 @@ export class StateManager {
     private inCallback = false;
     private inRender = false;
     private pointer = 0;
+    private onStateChangeScheduled = false;
 
     constructor( onStateChanged: () => void) {
         this.onStateChanged = onStateChanged;
@@ -82,8 +83,16 @@ export class StateManager {
                     return;
                 }
                 this.storage[p].value = newState; 
-                this.onStateChanged();
-            } 
+               
+                if (!this.onStateChangeScheduled) {
+                    // Coalesce state changes into a single callback.
+                    this.onStateChangeScheduled = true;
+                    setTimeout(() => {  
+                        this.onStateChangeScheduled = false;
+                        this.onStateChanged();
+                    },0);
+                }
+            };
             this.storage.push({ 
                 value: initial, 
                 setter: setValue as (val: unknown)=> void
@@ -118,11 +127,11 @@ export class StateManager {
             }  
         }
         if (trigger) {
-            // setTimeout(() => {
-                this.inCallback = true;
-                cb();
-                this.inCallback = false;
-            // }, 0);
+            
+            this.inCallback = true;
+            cb();
+            this.inCallback = false;
+       
             try {
                 this.storage[this.pointer - 1].value = deps;
             } catch (e) {

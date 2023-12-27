@@ -11,20 +11,17 @@ import { useEffect, useRef, useState } from "react";
  * @returns {S} The state of the component as a function of it's props and it's own internal state.
  */
 export function useHeadlessComponent<P extends Record<string,unknown>, S extends Record<string,unknown>>(component: HeadlessComponent<P,S>, props: P): S {
-    let sm = useRef<StateManager | null>(null);
     const [, reRender] = useState(0);
+    const [sm, setStateManager] = useState<StateManager | null>(new StateManager( () => reRender(x => x + 1)));
     
-    if (sm.current === null) {
-        sm.current = new StateManager( () => reRender(x => x + 1));
-    }
+
 
     useEffect(() => {
+        setStateManager(new StateManager( () => reRender(x => x + 1)));
         return () => {
-            if (sm.current !== null) {
-                sm.current.destroy();
-                sm.current = null;
-            }
+            sm.destroy();
         }
     }, []);
-    return sm.current.render(component, props);
+    
+    return sm.render(component, props);
 }
