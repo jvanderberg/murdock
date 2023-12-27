@@ -1,5 +1,5 @@
-import { HeadlessComponent, StateManager } from "murdock-core";
-import { useEffect, useRef, useState } from "react";
+import { HeadlessComponent, StateManager } from 'murdock-core';
+import { useEffect, useState } from 'react';
 
 /**
  * Manage the lifecycle of the headless component.
@@ -10,18 +10,20 @@ import { useEffect, useRef, useState } from "react";
  * @param state {S} The State type. State is controlled by the component, and can only be changed by the component.
  * @returns {S} The state of the component as a function of it's props and it's own internal state.
  */
-export function useHeadlessComponent<P extends Record<string,unknown>, S extends Record<string,unknown>>(component: HeadlessComponent<P,S>, props: P): S {
-    const [, reRender] = useState(0);
-    const [sm, setStateManager] = useState<StateManager | null>(new StateManager( () => reRender(x => x + 1)));
-    
+export function useHeadlessComponent<P extends Record<string, unknown>, S extends Record<string, unknown>>(
+	component: HeadlessComponent<P, S>,
+	props: P
+): S {
+	const [, reRender] = useState(0);
+	const [sm, setStateManager] = useState<StateManager>(new StateManager(() => reRender(x => x + 1)));
 
+	useEffect(() => {
+		setStateManager(new StateManager(() => reRender(x => x + 1)));
+		return () => {
+			sm.destroy();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-    useEffect(() => {
-        setStateManager(new StateManager( () => reRender(x => x + 1)));
-        return () => {
-            sm.destroy();
-        }
-    }, []);
-    
-    return sm.render(component, props);
+	return sm.render(component, props);
 }

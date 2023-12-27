@@ -14,8 +14,7 @@ const search = async (value: string, abortController: AbortController) => {
 }
 function App() {
     const [count, setCount] = useState(0)
-    const [border, setBorder] = useState(true)
-    const [label, setLabel] = useState("Hello")
+
 
     const [searchValue, setSearchValue] = useState("");
     console.log(searchValue);
