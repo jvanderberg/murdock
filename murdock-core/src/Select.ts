@@ -7,15 +7,18 @@ export type SelectProps<T> = {
 	setSearch?: (value: string) => void;
 	selectedItem?: T | null;
 	setSelectedItem?: (item: T | null) => void;
-	searchResults?: T[];
-	setSearchResults?: (results: T[]) => void;
 	fetching?: boolean;
 	setFetching?: (value: boolean) => void;
 	focused?: boolean;
 	setFocused?: (value: boolean) => void;
 	open?: boolean;
 	setOpen?: (value: boolean) => void;
+	sort?: (a: T, b: T) => number;
+	itemToString?: (item: T) => string;
+	limit?: number;
 };
+type SelectResults<T> = Array<{ item: T; selected: boolean; setSelected: (selected: boolean) => void }>;
+
 export type SelectState<T> = {
 	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
 	debounce: number;
@@ -23,33 +26,40 @@ export type SelectState<T> = {
 	setSearch: (value: string) => void;
 	selectedItem: T | null;
 	setSelectedItem: (item: T) => void;
-	searchResults: T[];
-	setSearchResults: (results: T[]) => void;
+	searchResults: SelectResults<T>;
 	fetching: boolean;
 	setFetching: (value: boolean) => void;
 	focused: boolean;
 	setFocused: (value: boolean) => void;
 	open: boolean;
 	setOpen: (value: boolean) => void;
+	onInputClick: () => void;
+	clear: () => void;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
 	const [search, setSearch] = useState<string>('', props.search, props.setSearch);
-	const [searchResults, setSearchResults] = useState<T[]>([], props.searchResults, props.setSearchResults);
+	const [searchResults, setSearchResults] = useState<SelectResults<T>>([]);
 	const [fetching, setFetching] = useState(false, props.fetching, props.setFetching);
 	const [selectedItem, setSelectedItem] = useState<T | null>(null, props.selectedItem, props.setSelectedItem);
 	const [focused, setFocused] = useState(false, props.focused, props.setFocused);
-	const [open, setOpen] = useState(false, props.open, props.setOpen);
+	const [open, setOpen] = useState(true, props.open, props.setOpen);
+	const limit = props.limit ?? 10;
+	const itemToString = props.itemToString ?? ((item: T) => item as unknown as string);
+	const sort = props.sort ?? ((a: T, b: T) => itemToString(a).localeCompare(itemToString(b)));
 
 	useEffect(() => {
 		if (focused) {
 			setOpen(true);
 		} else {
-			setOpen(false);
+			setTimeout(() => setOpen(false), 100);
+			if (selectedItem !== null) {
+				setSearch(itemToString(selectedItem));
+			}
 		}
-	}, [focused]);
+	}, [focused, selectedItem, setSearch, itemToString, setOpen]);
 
 	useEffect(() => {
 		if (timer.current) {
@@ -61,7 +71,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			abortController.current = new AbortController();
 			const ab = abortController.current;
 			async function handleSearch() {
-				if (search === '') {
+				if (search === '' || (selectedItem !== null && itemToString(selectedItem) === search)) {
 					setFetching(false);
 					setSearchResults([]);
 					return;
@@ -74,11 +84,34 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 						setFetching(false);
 
 						if (!ab?.signal.aborted) {
-							setSearchResults(results);
+							const fullRes = results
+								.sort(sort)
+								.slice(0, limit)
+								.map(item => {
+									return {
+										item,
+										selected:
+											selectedItem && itemToString(item) === itemToString(selectedItem)
+												? true
+												: false,
+										setSelected: (selected: boolean) => {
+											if (selected) {
+												setSelectedItem(item);
+												setSearch(itemToString(item));
+												setSearchResults([]);
+											} else {
+												setSelectedItem(null);
+											}
+										}
+									};
+								});
+							console.log(fullRes);
+							setSearchResults(fullRes);
 						}
 					}
 				} catch (e) {
 					setFetching(false);
+					setSearchResults([]);
 				}
 			}
 			handleSearch();
@@ -94,11 +127,18 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		fetching,
 		setFetching,
 		searchResults,
-		setSearchResults,
 		searchFunction: props.searchFunction,
 		focused,
 		setFocused,
 		open,
-		setOpen
+		setOpen,
+		onInputClick: () => {
+			setSearch('');
+		},
+		clear: () => {
+			setSearch('');
+			setSelectedItem(null);
+			setSearchResults([]);
+		}
 	};
 }

@@ -1,12 +1,6 @@
-import './List';
-import './Button';
-export * from './Button';
-
 export * from './Select';
 
 export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// type PieceState<S extends Record<string, unknown>> = { [Key in keyof S]?: S[Key] }
 
 export type Hooks = {
 	useState: StateManager['useState'];
@@ -75,17 +69,18 @@ export class StateManager {
 		if (this.storage.length <= this.pointer) {
 			const setValue = (newState: T) => {
 				if (this.destroyed) {
-					// Some async code may still be running after the component is destroyed, ignore state updates.
 					return;
 				}
+
 				const current = this.storage[p].value as T;
+
 				if (current === newState) {
 					return;
 				}
+
 				this.storage[p].value = newState;
 
 				if (!this.onStateChangeScheduled) {
-					// Coalesce state changes into a single callback.
 					this.onStateChangeScheduled = true;
 					setTimeout(() => {
 						this.onStateChangeScheduled = false;
@@ -109,7 +104,7 @@ export class StateManager {
 		return ref;
 	};
 
-	useEffect = (cb: () => void, deps: any[]) => {
+	useEffect = (cb: () => void, deps: unknown[]) => {
 		// If this is the first time we are called, trigger the effect, because we have no deps to compare against.
 		let trigger = this.storage[this.pointer] === undefined;
 

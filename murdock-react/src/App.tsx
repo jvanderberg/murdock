@@ -5,12 +5,20 @@ import './App.css'
 import { Card } from './Card'
 import { Select2 } from './Select2.tsx'
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-const search = async (value: string, abortController: AbortController) => {
-    await wait(100);
+
+export type Country = {
+    name: {
+        common: string;
+    };
+}
+const search = async (value: string, abortController: AbortController): Promise<Country[]> => {
+    const results = await fetch("https://restcountries.com/v3.1/name/" + value, { signal: abortController.signal });
+
     if (abortController.signal.aborted) {
         throw new Error("Aborted");
     }
-    return value.split("").map((char) => char.repeat(10));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await results.json();
 }
 function App() {
     const [count, setCount] = useState(0)
@@ -20,7 +28,7 @@ function App() {
     console.log(searchValue);
     return (
         <>
-            <Select2 search={searchValue} setSearch={setSearchValue} searchFunction={search} />
+            <Select2 search={searchValue} setSearch={setSearchValue} searchFunction={search} itemToString={(item) => item.name.common} />
             {/* <Button border={border} label={label} onClick={() => { setBorder(!border) }} /> */}
             <div>
                 <Card title="Hello" description="World" />
