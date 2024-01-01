@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
-import { Card } from './Card'
-import { Select2 } from './Select2.tsx'
+
+import { Select } from './Select.tsx'
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export type Country = {
@@ -22,35 +21,18 @@ const search = async (value: string, abortController: AbortController): Promise<
 }
 function App() {
     const [count, setCount] = useState(0)
+    const [selectedItem, setSelectedItem] = useState<Country | null>(null);
 
 
     const [searchValue, setSearchValue] = useState("");
     console.log(searchValue);
     return (
         <>
-            <Select2 search={searchValue} setSearch={setSearchValue} searchFunction={search} itemToString={(item) => item.name.common} />
-            {/* <Button border={border} label={label} onClick={() => { setBorder(!border) }} /> */}
-            <div>
-                <Card title="Hello" description="World" />
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
+            <h1>{selectedItem?.name.common}</h1>
+            <Select selectedItem={selectedItem} setSelectedItem={setSelectedItem} debounce={50} limit={20} search={searchValue} setSearch={setSearchValue} searchFunction={search} itemToString={(item) => item.name.common} />
+
             <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+
         </>
     )
 }

@@ -17,7 +17,7 @@ export type SelectProps<T> = {
 	itemToString?: (item: T) => string;
 	limit?: number;
 };
-type SelectResults<T> = Array<{ item: T; selected: boolean; setSelected: (selected: boolean) => void }>;
+export type SelectResults<T> = Array<{ item: T; selected: boolean; setSelected: (selected: boolean) => void }>;
 
 export type SelectState<T> = {
 	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
@@ -35,6 +35,7 @@ export type SelectState<T> = {
 	setOpen: (value: boolean) => void;
 	onInputClick: () => void;
 	clear: () => void;
+	itemToString: (item: T) => string;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
@@ -139,6 +140,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			setSearch('');
 			setSelectedItem(null);
 			setSearchResults([]);
-		}
+		},
+		itemToString
 	};
 }

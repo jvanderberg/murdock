@@ -1,3 +1,4 @@
 packages:
   - 'murdock-core'
   - 'murdock-react'
+  - 'murdock-vue'
