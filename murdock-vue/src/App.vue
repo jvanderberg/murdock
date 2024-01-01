@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Select from './Select.vue';
 
 const search = ref('');
-const selectedItem = ref<unknown>(undefined);
+const selectedItem = ref<Country>(undefined);
 export type Country = {
 	name: {
 		common: string;
@@ -21,7 +21,7 @@ const searchFunc = async (value: string, abortController: AbortController): Prom
 	return await results.json();
 };
 
-function itemToString(item: unknown): string {
+function itemToString(item: Country): string {
 	return item?.name?.common;
 }
 </script>
@@ -34,6 +34,7 @@ function itemToString(item: unknown): string {
 			:search-function="searchFunc"
 			:debounce="300"
 			:item-to-string="itemToString"
+			:limit="10"
 		/>
 		{{ search }}
 		{{ selectedItem }}

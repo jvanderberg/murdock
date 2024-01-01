@@ -1,43 +1,64 @@
-import { type Ref, createApp, ref, type UnwrapRef, unref } from 'vue';
+import { createApp, ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
 import './style.css';
 import App from './App.vue';
 import type { SelectResults } from 'murdock-core';
+import type { SelectProps } from 'murdock-core';
+import type { HeadlessComponent } from 'murdock-core';
+import { StateManager } from 'murdock-core';
 
-type StateTuple<T> = [Ref<UnwrapRef<T>>, (value: T) => void];
+type Hook = (
+	hook: () => any,
+	target?: ComponentInternalInstance | null
+) => false | Function | undefined;
 
-export function useState<T>(initialValue: T): StateTuple<T> {
-	const state = ref<T>(initialValue);
-
-	const setState = (value: T) => {
-		(state.value as T) = value;
-	};
-
-	return [state, setState] as StateTuple<T>;
+export function useHeadlessComponent<
+	P extends Record<string, unknown>,
+	S extends Record<string, unknown>
+>(
+	component: HeadlessComponent<P, S>,
+	props: P,
+	emit: ReturnType<typeof defineEmits>,
+	onMounted: Hook,
+	onUnmounted: Hook,
+	onBeforeUpdate: Hook
+) {
+	const renderCount = ref(0);
+	const state = ref({} as S);
+	const sm: StateManager = new StateManager(() => {
+		renderCount.value++;
+	});
+	onMounted(() => {
+		const p = getRenderProps(props, emit);
+		state.value = sm.render(component, p) as UnwrapRef<S>;
+	});
+	onUnmounted(() => {
+		sm.destroy();
+	});
+	onBeforeUpdate(() => {
+		const p = getRenderProps(props, emit);
+		state.value = sm.render(component, p) as UnwrapRef<S>;
+	});
+	return { state, renderCount };
 }
-export type SelectPropsVue<T> = {
-	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
-	debounce?: number;
-	search?: Ref<string>;
-	selectedItem?: Ref<T | null>;
-	sort?: (a: T, b: T) => number;
-	itemToString?: (item: T) => string;
-	limit?: number;
-};
+export function getRenderProps<P extends Record<string, unknown>>(
+	props: P,
+	emitFunc: ReturnType<typeof defineEmits>
+): P {
+	const keys = Object.keys(props) as Array<keyof SelectProps<unknown>>;
+	const setters: Record<string, any> = {};
+	for (const key of keys) {
+		if (key.startsWith('set')) {
+			const renderKey = (key[3].toLowerCase() + key.slice(4)) as keyof P;
+			if (props[renderKey] !== undefined)
+				setters[key] = (selectedItem: unknown) => {
+					emitFunc(
+						('update:' + String(renderKey)) as Parameters<typeof emitFunc>[0],
+						selectedItem
+					);
+				};
+		}
+	}
+	return { ...props, ...setters };
+}
 
-export type SelectStateVue<T> = {
-	search: string;
-	setSearch: (value: string) => void;
-	searchResults: SelectResults<T>;
-	setSearchResults: (value: SelectResults<T>) => void;
-	fetching: boolean;
-	focused: boolean;
-	setFocused: (value: boolean) => void;
-	open: boolean;
-	setOpen: (value: boolean) => void;
-	onInputClick: () => void;
-	clear: () => void;
-	itemToString: (item: T) => string;
-	selectItem: (item: T | null) => void;
-	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
-};
 createApp(App).mount('#app');
