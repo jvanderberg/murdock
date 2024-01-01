@@ -8,11 +8,8 @@ export type SelectProps<T> = {
 	selectedItem?: T | null;
 	setSelectedItem?: (item: T | null) => void;
 	fetching?: boolean;
-	setFetching?: (value: boolean) => void;
 	focused?: boolean;
-	setFocused?: (value: boolean) => void;
 	open?: boolean;
-	setOpen?: (value: boolean) => void;
 	sort?: (a: T, b: T) => number;
 	itemToString?: (item: T) => string;
 	limit?: number;
@@ -43,10 +40,10 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 	const timer = useRef<ReturnType<typeof setTimeout>>();
 	const [search, setSearch] = useState<string>('', props.search, props.setSearch);
 	const [searchResults, setSearchResults] = useState<SelectResults<T>>([]);
-	const [fetching, setFetching] = useState(false, props.fetching, props.setFetching);
+	const [fetching, setFetching] = useState(false);
 	const [selectedItem, setSelectedItem] = useState<T | null>(null, props.selectedItem, props.setSelectedItem);
-	const [focused, setFocused] = useState(false, props.focused, props.setFocused);
-	const [open, setOpen] = useState(true, props.open, props.setOpen);
+	const [focused, setFocused] = useState(false);
+	const [open, setOpen] = useState(true);
 	const limit = props.limit ?? 10;
 	const itemToString = props.itemToString ?? ((item: T) => item as unknown as string);
 	const sort = props.sort ?? ((a: T, b: T) => itemToString(a).localeCompare(itemToString(b)));
