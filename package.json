@@ -5,7 +5,8 @@
     "workspaces": [
         "murdock-core",
         "murdock-react",
-        "murdock-vue"
+        "murdock-vue",
+        "murdock-angular"
     ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

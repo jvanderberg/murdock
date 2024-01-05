@@ -1,7 +1,6 @@
 import { createApp, ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
 import './style.css';
 import App from './App.vue';
-import type { SelectResults } from 'murdock-core';
 import type { SelectProps } from 'murdock-core';
 import type { HeadlessComponent } from 'murdock-core';
 import { StateManager } from 'murdock-core';
@@ -50,10 +49,10 @@ export function getRenderProps<P extends Record<string, unknown>>(
 		if (key.startsWith('set')) {
 			const renderKey = (key[3].toLowerCase() + key.slice(4)) as keyof P;
 			if (props[renderKey] !== undefined)
-				setters[key] = (selectedItem: unknown) => {
+				setters[key] = (value: unknown) => {
 					emitFunc(
 						('update:' + String(renderKey)) as Parameters<typeof emitFunc>[0],
-						selectedItem
+						value
 					);
 				};
 		}

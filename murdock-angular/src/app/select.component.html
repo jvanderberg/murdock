@@ -1,0 +1,14 @@
+<input #search class="mk-input" [value]="search" (input)="setSearch(search.value)" (blur)="onBlur()" />
+(focus)="onFocus()" />
+<div style="display: none"></div>
+@if(open) {
+<div class="mk-input-dropdown-wrapper">
+    <div class="mk-input-dropdown">
+        @for (item of searchResults; track itemToString(item.item)) {
+        <p style="cursor: pointer" className="mk-input-dropdown-item" (click)="item.setSelected(true)">
+            {{ itemToString(item.item) }}
+        </p>
+        }
+    </div>
+</div>
+}

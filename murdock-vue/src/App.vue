@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Select from './Select.vue';
 
 const search = ref('');
-const selectedItem = ref<Country>(undefined);
+const selectedItem = ref<Country | undefined>(undefined);
 export type Country = {
 	name: {
 		common: string;
@@ -32,9 +32,10 @@ function itemToString(item: Country): string {
 			v-model:search="search"
 			v-model:selected-item="selectedItem"
 			:search-function="searchFunc"
-			:debounce="300"
+			:debounce="100"
 			:item-to-string="itemToString"
 			:limit="10"
+			:placeholder="'Search for a country'"
 		/>
 		{{ search }}
 		{{ selectedItem }}

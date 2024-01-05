@@ -2,3 +2,4 @@ packages:
   - 'murdock-core'
   - 'murdock-react'
   - 'murdock-vue'
+  - 'murdock-angular'
