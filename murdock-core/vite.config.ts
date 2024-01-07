@@ -14,9 +14,11 @@ export default defineConfig({
 			fileName: 'murdock'
 		},
 		sourcemap: true,
+		assetsDir: new URL('./src/css', import.meta.url).pathname,
 		rollupOptions: {
 			output: {
-				sourcemap: true
+				sourcemap: true,
+				assetFileNames: '[name].[ext]'
 			}
 		}
 	}

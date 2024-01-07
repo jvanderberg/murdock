@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon --verbose --exec 'npm -w murdock-core run build && npm -w murdock-vue run dev '"
+        "dev": "nodemon --verbose --exec 'npm -w murdock-core run build && npm -w murdock-react run dev '"
     },
     "author": "",
     "license": "ISC",

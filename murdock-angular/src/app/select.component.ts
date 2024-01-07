@@ -1,6 +1,7 @@
 import { ApplicationRef, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
 import { SelectComponent, SelectProps, SelectResults, StateManager } from 'murdock-core';
 import { getRenderProps } from '../index.js';
+import 'murdock-core/select.css';
 @Component({
 	selector: 'select-component',
 	templateUrl: './select.component.html',

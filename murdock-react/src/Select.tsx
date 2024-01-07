@@ -1,6 +1,6 @@
 import { SelectComponent, SelectProps } from 'murdock-core';
 import { useHeadlessComponent, } from './index.ts';
-import './Select.css';
+import 'murdock-core/select.css'
 
 export const Select = <T,>({ searchFunction, itemToString, debounce, selectedItem, setSelectedItem, limit }: SelectProps<T>) => {
     const state = useHeadlessComponent(SelectComponent<T>, { searchFunction, debounce, itemToString, selectedItem, setSelectedItem, limit });

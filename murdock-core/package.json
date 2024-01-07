@@ -13,6 +13,10 @@
             "import": "./dist/murdock.js",
             "require": "./dist/murdock.umd.cjs",
             "types": "./dist/index.d.ts"
+        },
+        "./select.css": {
+            "import": "./dist/select.css",
+            "require": "./dist/select.css"
         }
     },
     "types": "./dist/index.d.ts",
