@@ -1,6 +1,6 @@
-<input #search class="mk-input" [value]="search" (input)="setSearch(search.value)" (blur)="onBlur()" />
-(focus)="onFocus()" />
-<div style="display: none"></div>
+<input tabindex="0" #searchBox class="mk-input" [value]="search" (blur)="setFocused(false)" (focus)="setFocused(true)"
+    (input)="setSearch(searchBox.value)" (click)="onInputClick()" />
+<div style="display: none">{{renderCount}}</div>
 @if(open) {
 <div class="mk-input-dropdown-wrapper">
     <div class="mk-input-dropdown">
@@ -11,4 +11,5 @@
         }
     </div>
 </div>
+
 }
