@@ -1,10 +1,10 @@
-<input tabindex="0" #searchBox class="mk-input" [value]="search" (blur)="setFocused(false)" (focus)="setFocused(true)"
-    (input)="setSearch(searchBox.value)" (click)="onInputClick()" />
-<div style="display: none">{{renderCount}}</div>
-@if(open) {
+<input tabindex="0" #searchBox class="mk-input" [value]="state.search" (blur)="state.setFocused(false)"
+    (focus)="state.setFocused(true)" (input)="state.setSearch!==undefined && state.setSearch(searchBox.value)"
+    (click)="state.onInputClick()" />
+@if(state.open) {
 <div class="mk-input-dropdown-wrapper">
     <div class="mk-input-dropdown">
-        @for (item of searchResults; track itemToString(item.item)) {
+        @for (item of state.searchResults; track itemToString(item.item)) {
         <p style="cursor: pointer" className="mk-input-dropdown-item" (click)="item.setSelected(true)">
             {{ itemToString(item.item) }}
         </p>

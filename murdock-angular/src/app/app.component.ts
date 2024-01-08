@@ -1,20 +1,20 @@
 import { Component, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SelectComponent2 } from './select.component.js';
+import { SelectComponent } from './select.component.js';
 import { Country } from '../index.js';
 
 @Component({
 	selector: 'app-root',
 	standalone: true,
-	imports: [CommonModule, RouterOutlet, SelectComponent2],
+	imports: [CommonModule, RouterOutlet, SelectComponent],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.css'
 })
 export class AppComponent {
 	title = 'murdock-angular';
-	@Output() search = '';
-	@Output() selectedItem: Country | null = null;
+	// @Output() search = '';
+	// @Output() selectedItem: Country | null = null;
 	@Output() searchFunc = async (value: string, abortController: AbortController): Promise<Country[]> => {
 		const results = await fetch('https://restcountries.com/v3.1/name/' + value, {
 			signal: abortController.signal

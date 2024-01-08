@@ -1,9 +1,8 @@
 <div class="content">
-    <select-component [(search)]="search" [searchFunction]="searchFunc" [(selectedItem)]="selectedItem"
-        [itemToString]="itemToString">
+    <select-component [searchFunction]="searchFunc" [itemToString]="itemToString">
     </select-component>
 </div>
-<div>{{selectedItem&&itemToString(selectedItem)}}</div>
+<!-- <div>{{selectedItem&&itemToString(selectedItem)}}</div> -->
 <input />
 
 
