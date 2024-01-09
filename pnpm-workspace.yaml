@@ -3,3 +3,4 @@ packages:
   - 'murdock-react'
   - 'murdock-vue'
   - 'murdock-angular'
+  - 'angular-examples'
