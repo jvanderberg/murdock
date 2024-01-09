@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Select from './Select.vue';
+import { SelectComponent } from 'murdock-vue';
 
 const search = ref('');
 const selectedItem = ref<Country | undefined>(undefined);
@@ -28,7 +28,7 @@ function itemToString(item: Country): string {
 
 <template>
 	<div>
-		<Select
+		<SelectComponent
 			v-model:search="search"
 			v-model:selected-item="selectedItem"
 			:search-function="searchFunc"

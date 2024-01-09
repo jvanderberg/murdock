@@ -4,3 +4,4 @@ packages:
   - 'murdock-vue'
   - 'murdock-angular'
   - 'angular-examples'
+  - 'vue-examples'

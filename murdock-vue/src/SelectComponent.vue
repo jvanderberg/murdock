@@ -1,14 +1,13 @@
 <script setup lang="ts" generic="T = unknown">
-import { SelectComponent, type SelectProps } from 'murdock-core';
+import { SelectComponent as MKSelect, type SelectProps } from 'murdock-core';
 import { onBeforeUpdate, onMounted, onUnmounted } from 'vue';
-import './Select.css';
-import { useHeadlessComponent } from './main.js';
+import { useHeadlessComponent } from './index.js';
 
 const props = defineProps<SelectProps<T>>();
 const emit = defineEmits(['update:search', 'update:selectedItem']);
 
 const { state, renderCount } = useHeadlessComponent(
-	SelectComponent<T>,
+	MKSelect<T>,
 	props,
 	emit,
 	onMounted,
@@ -41,3 +40,4 @@ const { state, renderCount } = useHeadlessComponent(
 		</div>
 	</div>
 </template>
+<style src="murdock-core/select.css" scoped></style>

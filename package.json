@@ -6,7 +6,9 @@
         "murdock-core",
         "murdock-react",
         "murdock-vue",
-        "murdock-angular"
+        "murdock-angular",
+        "angular-examples",
+        "vue-examples"
     ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

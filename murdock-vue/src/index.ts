@@ -1,6 +1,4 @@
-import { createApp, ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
-import './style.css';
-import App from './App.vue';
+import { ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
 import type { SelectProps } from 'murdock-core';
 import type { HeadlessComponent } from 'murdock-core';
 import { StateManager } from 'murdock-core';
@@ -60,4 +58,6 @@ export function getRenderProps<P extends Record<string, unknown>>(
 	return { ...props, ...setters };
 }
 
-createApp(App).mount('#app');
+import SelectComponent from './SelectComponent.vue';
+
+export { SelectComponent };

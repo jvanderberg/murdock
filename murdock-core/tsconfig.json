@@ -21,12 +21,8 @@
             ]
         }
     },
-    "files": [
-        "x-card.d.ts"
-    ],
     "include": [
         "node_modules/vite/client.d.ts",
         "src/index.ts",
-        "x-card.d.ts"
     ]
 }
