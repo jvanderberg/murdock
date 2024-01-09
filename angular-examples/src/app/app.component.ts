@@ -1,9 +1,13 @@
 import { Component, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SelectComponent } from './select.component.js';
-import { Country } from '../index.js';
+import { SelectComponent } from 'murdock-angular';
 
+export type Country = {
+	name: {
+		common: string;
+	};
+};
 @Component({
 	selector: 'app-root',
 	standalone: true,
@@ -13,8 +17,8 @@ import { Country } from '../index.js';
 })
 export class AppComponent {
 	title = 'murdock-angular';
-	// @Output() search = '';
-	// @Output() selectedItem: Country | null = null;
+	@Output() search = '';
+	@Output() selectedItem: Country | null = null;
 	@Output() searchFunc = async (value: string, abortController: AbortController): Promise<Country[]> => {
 		const results = await fetch('https://restcountries.com/v3.1/name/' + value, {
 			signal: abortController.signal

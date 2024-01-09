@@ -1,0 +1,11 @@
+<div class="content">
+    <select-component [(search)]="search" [(selectedItem)]="selectedItem" [searchFunction]="searchFunc"
+        [itemToString]="itemToString">
+    </select-component>
+
+</div>
+<div>{{selectedItem&&itemToString(selectedItem)}}</div>
+<input />
+
+
+<router-outlet></router-outlet>

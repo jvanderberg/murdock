@@ -10,11 +10,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "paths": {
-      "murdock-angular": [
-        "./dist/murdock-angular"
-      ]
-    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
