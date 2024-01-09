@@ -2,12 +2,17 @@ import { ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
 import type { SelectProps } from 'murdock-core';
 import type { HeadlessComponent } from 'murdock-core';
 import { StateManager } from 'murdock-core';
-
+export { type SelectProps } from 'murdock-core';
+/**
+ * @internal
+ */
 type Hook = (
 	hook: () => any,
 	target?: ComponentInternalInstance | null
 ) => false | Function | undefined;
-
+/**
+ * @internal
+ */
 export function useHeadlessComponent<
 	P extends Record<string, unknown>,
 	S extends Record<string, unknown>
@@ -37,6 +42,9 @@ export function useHeadlessComponent<
 	});
 	return { state, renderCount };
 }
+/**
+ * @internal
+ */
 export function getRenderProps<P extends Record<string, unknown>>(
 	props: P,
 	emitFunc: ReturnType<typeof defineEmits>
@@ -57,7 +65,3 @@ export function getRenderProps<P extends Record<string, unknown>>(
 	}
 	return { ...props, ...setters };
 }
-
-import SelectComponent from './SelectComponent.vue';
-
-export { SelectComponent };

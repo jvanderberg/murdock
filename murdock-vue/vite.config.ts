@@ -1,32 +1,56 @@
-import { fileURLToPath, URL } from 'node:url';
-
-import { defineConfig } from 'vite';
+import { Plugin, defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
+import fs from 'node:fs';
+import path from 'node:path';
+import dts from 'vite-plugin-dts';
+import type { UserConfig } from 'vite';
+/**
+ * Patch generated entries and import their corresponding CSS files.
+ * Also normalize MonacoEditor.css
+ */
+const patchCssFiles: Plugin = {
+    name: 'patch-css',
+    apply: 'build',
+    writeBundle() {
+        const outDir = path.resolve('dist');
 
-// https://vitejs.dev/config/
+
+        ['select-component'].forEach((file) => {
+            const filePath = path.resolve(outDir, file + '.js');
+            const content = fs.readFileSync(filePath, 'utf-8');
+            fs.writeFileSync(filePath, `import './${file}.css'\n${content}`);
+        });
+    }
+};
 export default defineConfig({
-	plugins: [vue(), vueJsx()],
-	build: {
-		lib: {
-			// Could also be a dictionary or array of multiple entry points
-			entry: new URL('./src/index.ts', import.meta.url).pathname,
-			name: 'murdock-vue',
-			// the proper extensions will be added
-			fileName: 'murdock-vue'
-		},
+    plugins: [
+        vue(),
+        dts({
+            rollupTypes: true
+        }),
+        patchCssFiles
+    ],
+    build: {
+        lib: {
+            entry: {
+                'murdock-vue': './src/index.ts',
+                'select-component': './src/SelectComponent.vue'
+            },
+            formats: ['es'],
+            fileName: () => '[name].js'
+        },
+        cssCodeSplit: true,
+        sourcemap: true,
 
-		sourcemap: true,
-
-		rollupOptions: {
-			external: ['vue'],
-			output: {
-				// Provide global variables to use in the UMD build
-				// for externalized deps
-				globals: {
-					vue: 'Vue'
-				}
-			}
-		}
-	}
-});
+        rollupOptions: {
+            external: ['vue'],
+            output: {
+                // Provide global variables to use in the UMD build
+                // for externalized deps
+                globals: {
+                    vue: 'Vue'
+                }
+            }
+        }
+    }
+} as UserConfig);

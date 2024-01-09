@@ -1,8 +1,7 @@
 <script setup lang="ts" generic="T = unknown">
 import { SelectComponent as MKSelect, type SelectProps } from 'murdock-core';
 import { onBeforeUpdate, onMounted, onUnmounted } from 'vue';
-import { useHeadlessComponent } from './index.js';
-
+import { useHeadlessComponent } from './index';
 const props = defineProps<SelectProps<T>>();
 const emit = defineEmits(['update:search', 'update:selectedItem']);
 

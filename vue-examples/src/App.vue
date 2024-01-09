@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { SelectComponent } from 'murdock-vue';
+import SelectComponent from 'murdock-vue/select-component';
 
 const search = ref('');
 const selectedItem = ref<Country | undefined>(undefined);

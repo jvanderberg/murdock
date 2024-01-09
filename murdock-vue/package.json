@@ -6,19 +6,32 @@
     "files": [
         "dist"
     ],
-    "main": "./dist/murdock-vue.umd.cjs",
+    "main": "./dist/murdock-vue.js",
     "module": "./dist/murdock-vue.js",
     "exports": {
         ".": {
             "import": "./dist/murdock-vue.js",
-            "require": "./dist/murdock-vue.umd.cjs",
-            "types": "./dist/index.d.ts"
+            "require": null,
+            "types": "./dist/murdock-vue.d.ts"
+        },
+        "./select-component": {
+            "import": "./dist/select-component.js",
+            "require": null,
+            "types": "./dist/select-component.d.ts"
         }
     },
-    "types": "./dist/index.d.ts",
+    "types": "./dist/murdock-vue.d.ts",
+    "typesVersions": {
+        "*": {
+            "*": [
+                "./dist/*",
+                "./*"
+            ]
+        }
+    },
     "scripts": {
         "dev": "vite",
-        "build": "vite build  && vue-tsc --emitDeclarationOnly",
+        "build": "vite build  ",
         "build-types": "tsc --build  --verbose",
         "preview": "vite preview",
         "test:unit": "vitest",
@@ -29,6 +42,7 @@
     },
     "dependencies": {
         "murdock-core": "workspace:^",
+        "vite-plugin-dts": "^3.7.0",
         "vue": "^3.3.11"
     },
     "devDependencies": {
