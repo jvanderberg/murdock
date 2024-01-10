@@ -1,0 +1,6 @@
+node_modules
+src
+public
+vite.config.ts
+tsconfig.json
+vite.config.d.ts

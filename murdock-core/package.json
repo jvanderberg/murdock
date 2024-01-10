@@ -1,8 +1,8 @@
 {
-    "private": true,
+    "private": false,
     "type": "module",
-    "name": "murdock-core",
-    "version": "0.0.1",
+    "name": "@murdock-ui/murdock-core",
+    "version": "0.5.0",
     "files": [
         "dist"
     ],
@@ -36,5 +36,20 @@
         "@types/preact-custom-element": "^4.0.4",
         "typescript": "^5.3.3",
         "vite": "^4.3.2"
-    }
+    },
+    "description": "Murdock Core",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jvanderberg/murdock.git"
+    },
+    "keywords": [
+        "Headless",
+        "UI"
+    ],
+    "author": "Josh Vanderberg",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jvanderberg/murdock/issues"
+    },
+    "homepage": "https://github.com/jvanderberg/murdock#readme"
 }
