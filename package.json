@@ -1,7 +1,8 @@
 {
     "name": "murdock",
-    "version": "1.0.0",
+    "version": "0.5.2",
     "description": "Murdock",
+    "packageManager": "pnpm@8.14.0+sha256.9cebf61abd83f68177b29484da72da9751390eaad46dfc3072d266bfbb1ba7bf",
     "workspaces": [
         "murdock-core",
         "murdock-react",
@@ -11,18 +12,20 @@
         "vue-examples"
     ],
     "scripts": {
+        "bump": "bumpp --all",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon --verbose --exec 'npm -w murdock-core run build && npm -w murdock-react run dev '"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "nodemon": "^3.0.2",
+        "bumpp": "^9.2.1",
         "eslint": "^8.55.0",
         "eslint-config-preact": "^1.3.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.1.2",
         "eslint-plugin-react": "^7.27.0",
+        "nodemon": "^3.0.2",
         "prettier": "^3.1.1",
         "prettier-eslint": "^16.2.0"
     },
