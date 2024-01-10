@@ -15,8 +15,7 @@
     },
     "dependencies": {
         "vue": "^3.3.11",
-        "murdock-core": "workspace:^",
-        "murdock-vue": "workspace:^"
+        "@murdock-ui/murdock-vue": "workspace:^"
     },
     "devDependencies": {
         "@rushstack/eslint-patch": "^1.3.3",

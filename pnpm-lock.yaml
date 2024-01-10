@@ -62,9 +62,6 @@ importers:
       murdock-angular:
         specifier: ../murdock-angular/dist/murdock-angular
         version: link:../murdock-angular/dist/murdock-angular
-      murdock-core:
-        specifier: workspace:^
-        version: link:../murdock-core
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -135,7 +132,7 @@ importers:
       '@angular/router':
         specifier: ^17.0.0
         version: 17.0.8(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser@17.0.8)(rxjs@7.8.1)
-      murdock-core:
+      '@murdock-ui/murdock-core':
         specifier: workspace:^
         version: link:../murdock-core
       rxjs:
@@ -212,7 +209,7 @@ importers:
 
   murdock-react:
     dependencies:
-      murdock-core:
+      '@murdock-ui/murdock-core':
         specifier: workspace:^
         version: link:../murdock-core
       react:
@@ -255,7 +252,7 @@ importers:
 
   murdock-vue:
     dependencies:
-      murdock-core:
+      '@murdock-ui/murdock-core':
         specifier: workspace:^
         version: link:../murdock-core
       vite-plugin-dts:
@@ -325,10 +322,7 @@ importers:
 
   vue-examples:
     dependencies:
-      murdock-core:
-        specifier: workspace:^
-        version: link:../murdock-core
-      murdock-vue:
+      '@murdock-ui/murdock-vue':
         specifier: workspace:^
         version: link:../murdock-vue
       vue:

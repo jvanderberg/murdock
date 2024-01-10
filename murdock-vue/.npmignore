@@ -1,0 +1,12 @@
+node_modules
+src
+public
+vite.config.ts
+tsconfig.json
+vite.config.d.ts
+.prettierrc.json
+env.d.ts
+README.md
+vitest.*
+.eslintrc.js
+.gitignore
