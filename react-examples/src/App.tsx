@@ -1,9 +1,8 @@
 import { useState } from 'react'
-
-import './App.css'
-
-import { Select } from './Select.tsx'
-const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import React from 'react';
+import './App.css';
+import './theme.css';
+import { SelectComponent } from '@murdock-ui/murdock-react/select-component';
 
 export type Country = {
     name: {
@@ -20,7 +19,7 @@ const search = async (value: string, abortController: AbortController): Promise<
     return await results.json();
 }
 function App() {
-    const [count, setCount] = useState(0)
+    // const [count, setCount] = useState(0)
     const [selectedItem, setSelectedItem] = useState<Country | null>(null);
 
 
@@ -29,9 +28,8 @@ function App() {
     return (
         <>
             <h1>{selectedItem?.name.common}</h1>
-            <Select selectedItem={selectedItem} setSelectedItem={setSelectedItem} debounce={50} limit={20} search={searchValue} setSearch={setSearchValue} searchFunction={search} itemToString={(item) => item.name.common} />
+            <SelectComponent id="country" width={300} overrideClassName="mk-select-root myclass" selectedItem={selectedItem} setSelectedItem={setSelectedItem} debounce={50} limit={10} search={searchValue} setSearch={setSearchValue} searchFunction={search} itemToString={(item) => item.name.common} />
 
-            <h1>Vite + React</h1>
 
         </>
     )

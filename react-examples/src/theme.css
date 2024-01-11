@@ -1,0 +1,15 @@
+:root {
+	--mk-padding: 0.5em;
+	--mk-corner-radius: 5px;
+	--mk-text-color: #030303;
+	--mk-background-color: #ffffff;
+	--mk-background-color-contrast: #f4f4f4;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--mk-text-color: #fff;
+		--mk-background-color: #242424;
+		--mk-background-color-contrast: #2c2c2c;
+	}
+}

@@ -1,6 +1,7 @@
 import { Hooks } from './index.js';
 
 export type SelectProps<T> = {
+	id?: string;
 	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
 	debounce?: number;
 	search?: string;
@@ -13,10 +14,14 @@ export type SelectProps<T> = {
 	sort?: (a: T, b: T) => number;
 	itemToString?: (item: T) => string;
 	limit?: number;
+	height?: number;
+	width?: number;
+	overrideClassName?: string;
 };
 export type SelectResults<T> = Array<{ item: T; selected: boolean; setSelected: (selected: boolean) => void }>;
 
 export type SelectState<T> = {
+	id?: string;
 	searchFunction: (search: string, abortController: AbortController) => Promise<T[]>;
 	debounce: number;
 	search: string;
@@ -33,6 +38,9 @@ export type SelectState<T> = {
 	onInputClick: () => void;
 	clear: () => void;
 	itemToString: (item: T) => string;
+	height?: number;
+	width?: number;
+	rootClassName?: string;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
@@ -50,14 +58,18 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 	useEffect(() => {
 		if (focused) {
-			setOpen(true);
+			if (searchResults.length > 0) {
+				setOpen(true);
+			} else {
+				setOpen(false);
+			}
 		} else {
 			setTimeout(() => setOpen(false), 100);
 			if (selectedItem !== null) {
 				setSearch(itemToString(selectedItem));
 			}
 		}
-	}, [focused, selectedItem, setSearch, itemToString, setOpen]);
+	}, [focused, selectedItem, setSearch, itemToString, setOpen, searchResults]);
 
 	useEffect(() => {
 		if (timer.current) {
@@ -103,7 +115,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 										}
 									};
 								});
-							console.log(fullRes);
 							setSearchResults(fullRes);
 						}
 					}
@@ -115,6 +126,20 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			handleSearch();
 		}, props.debounce ?? 100);
 	}, [search, props.searchFunction, setSearchResults, setFetching, props.debounce]);
+
+	let id: { id?: string } = {};
+	if (props.id !== undefined) {
+		id = { id: props.id };
+	}
+	let height = {};
+	if (props.height !== undefined) {
+		height = { height: props.height };
+	}
+	console.log('height', JSON.stringify(height), props.height);
+	let width = {};
+	if (props.width !== undefined) {
+		width = { width: props.width };
+	}
 
 	return {
 		debounce: props.debounce ?? 100,
@@ -138,6 +163,10 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			setSelectedItem(null);
 			setSearchResults([]);
 		},
-		itemToString
+		itemToString,
+		...height,
+		...width,
+		...id,
+		rootClassName: props.overrideClassName || 'mk-select-root'
 	};
 }

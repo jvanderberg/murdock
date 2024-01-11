@@ -1,8 +1,8 @@
 import { ref, type UnwrapRef, type ComponentInternalInstance } from 'vue';
-import type { SelectProps } from 'murdock-core';
-import type { HeadlessComponent } from 'murdock-core';
-import { StateManager } from 'murdock-core';
-export { type SelectProps } from 'murdock-core';
+import type { SelectProps } from '@murdock-ui/murdock-core';
+import type { HeadlessComponent } from '@murdock-ui/murdock-core';
+import { StateManager } from '@murdock-ui/murdock-core';
+export { type SelectProps } from '@murdock-ui/murdock-core';
 /**
  * @internal
  */

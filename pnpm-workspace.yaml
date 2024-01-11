@@ -5,3 +5,4 @@ packages:
   - 'murdock-angular'
   - 'angular-examples'
   - 'vue-examples'
+  - 'react-examples'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import SelectComponent from 'murdock-vue/select-component';
+import SelectComponent from '@murdock-ui/murdock-vue/select-component';
 
 const search = ref('');
 const selectedItem = ref<Country | undefined>(undefined);
@@ -29,13 +29,13 @@ function itemToString(item: Country): string {
 <template>
 	<div>
 		<SelectComponent
+			:id="'country-select'"
 			v-model:search="search"
 			v-model:selected-item="selectedItem"
 			:search-function="searchFunc"
 			:debounce="100"
 			:item-to-string="itemToString"
 			:limit="10"
-			:placeholder="'Search for a country'"
 		/>
 		{{ search }}
 		{{ selectedItem }}

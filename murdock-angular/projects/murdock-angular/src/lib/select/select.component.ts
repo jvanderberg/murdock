@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectProps, SelectState, SelectComponent as MKSelect } from 'murdock-core';
-import 'murdock-core/select.css';
+import { SelectProps, SelectState, SelectComponent as MKSelect } from '@murdock-ui/murdock-core';
+import '@murdock-ui/murdock-core/select.css';
 import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 @Component({
 	selector: 'select-component',

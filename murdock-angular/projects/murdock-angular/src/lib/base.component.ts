@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import { HeadlessComponent, StateManager } from 'murdock-core';
+import { HeadlessComponent, StateManager } from '@murdock-ui/murdock-core';
 
 export type HeadlessBase<S> = { state: S };
 export type HeadlessClass<P, S> = P & { state: S };

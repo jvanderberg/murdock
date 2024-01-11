@@ -1,4 +1,4 @@
-import { HeadlessComponent, StateManager } from 'murdock-core';
+import { HeadlessComponent, StateManager } from '@murdock-ui/murdock-core';
 import { useEffect, useState } from 'react';
 
 /**

@@ -1,44 +1,66 @@
-.mk-input {
+.mk-select-root .mk-select-input {
 	width: 100%;
 	height: 40px;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	padding: 0 10px;
-	font-size: 14px;
-	background-color: #fff;
+	border-radius: var(--mk-corner-radius, 4px);
+	padding: 0 var(--mk-padding, 1em);
+	color: var(--mk-text-color, #030303);
+	background-color: var(--mk-background-color, #ffffff);
 	box-sizing: border-box;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-	background-color: #fff;
+	/* background-color: #fff; */
 }
 
-.mk-input:focus {
+.mk-select-root .mk-select-input:focus {
 	outline: none;
-	border-color: #646cff;
-	box-shadow: 0 0 0 2px #646cff;
+	border-color: var(--mk-primary-color, #646cff);
+	box-shadow: 0 0 0 2px var(--mk-primary-color, #646cff);
 }
 
-.mk-input-dropdown-wrapper {
+.mk-select-root .mk-select-dropdown-wrapper {
 	position: relative;
+	color: var(--mk-text-color, #030303);
 }
 
-.mk-input-dropdown {
+.mk-select-root .mk-select-dropdown {
 	position: absolute;
-	min-width: 150px;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	border: 1px solid black;
-	background-color: #ffffff;
+	padding-top: calc(var(--mk-padding, 1em) / 2);
+	padding-bottom: calc(var(--mk-padding, 1em) / 2);
+	background-color: var(--mk-background-color-contrast, #efefef);
+	border: 1px solid var(--mk-text-color, #030303);
+	border-radius: var(--mk-corner-radius, 4px);
 	z-index: 1;
+	text-align: left;
 }
 
-@media (prefers-color-scheme: dark) {
+.mk-select-root .mk-select-dropdown-item {
+	padding-top: calc(var(--mk-padding, 1em) / 2);
+	padding-bottom: calc(var(--mk-padding, 1em) / 2);
+	padding-left: var(--mk-padding, 1em);
+	padding-right: var(--mk-padding, 1em);
+	white-space: nowrap;
+}
+
+.mk-select-root .mk-select-dropdown-item:hover {
+	background-color: var(--mk-primary-color, #646cff);
+	color: #fff;
+}
+
+/* .mk-select-root .mk-select-dropdown-item:last-child {
+	padding-bottom: 0;
+}
+.mk-select-root .mk-select-dropdown-item:first-child {
+	padding-top: 0;
+} */
+
+/* @media (prefers-color-scheme: dark) {
 	.mk-input-dropdown {
 		background-color: #333333;
-	}
+
 	.mk-input {
 		background-color: #333333;
 		border: 1px solid #ccc;
 	}
-}
+} */
