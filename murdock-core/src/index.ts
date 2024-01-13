@@ -63,7 +63,8 @@ export class StateManager {
 			if (remoteValue === undefined) {
 				throw new Error('setter was provided to a component, but no matching value was provided');
 			}
-			return [remoteValue, state => setTimeout(() => remoteSet(state), 0)];
+
+			return [remoteValue, state => Promise.resolve(1).then(() => remoteSet(state))];
 		}
 
 		if (this.storage.length <= this.pointer) {

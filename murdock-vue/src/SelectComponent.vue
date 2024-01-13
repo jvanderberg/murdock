@@ -29,13 +29,16 @@ const { state, renderCount } = useHeadlessComponent(
 			@blur="() => state.setFocused(false)"
 			@focus="() => state.setFocused(true)"
 			:style="{ width: state.width + 'px', height: state.height + 'px' }"
+			@keydown="(e) => state.handleKey(e)"
 		/>
 		<div style="display: none">{{ renderCount }}</div>
-		<div v-if="state.open" className="mk-select-dropdown-wrapper">
-			<div className="mk-select-dropdown">
+		<div className="mk-select-dropdown-wrapper">
+			<div
+				:ref="state.listRef"
+				:className="`mk-select-dropdown${!state.open ? ' hidden' : ''}`"
+			>
 				<div
-					style="cursor: pointer"
-					className="mk-select-dropdown-item"
+					:className="`mk-select-dropdown-item` + (item.focused ? ' focus-item' : '')"
 					v-bind:key="state.itemToString(item.item as T)"
 					v-for="item in state.searchResults"
 					@click="() => item.setSelected(true)"

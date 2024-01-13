@@ -19,12 +19,11 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
             />
 
             <div className="mk-select-dropdown-wrapper">
-                <div id={state.id + '-menu'} className={`mk-select-dropdown${!state.open ? ' hidden' : ''}`}>
+                <div ref={(ref) => state.listRef && state.listRef(ref as HTMLDivElement)} id={state.id + '-menu'} className={`mk-select-dropdown${!state.open ? ' hidden' : ''}`}>
                     {state.searchResults?.map((item) => (
                         <div
                             key={state.itemToString(item.item)}
                             className={`mk-select-dropdown-item${item.focused ? ' focus-item' : ''}`}
-                            style={{ cursor: 'pointer' }}
                             onClick={() => item.setSelected(true)}
                         >
                             {state.itemToString(item.item)}

@@ -48,12 +48,14 @@ export type SelectState<T> = {
 	height?: number;
 	width?: number;
 	rootClassName?: string;
+	listRef?: (ref: HTMLElement) => void;
 	handleKey: (key: KeyboardEvent) => void;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
+	const listRef = useRef<HTMLElement>();
 	const [search, setSearch] = useState<string>('', props.search, props.setSearch);
 	const [searchResults, setSearchResults] = useState<SelectResults<T>>([]);
 	const [fetching, setFetching] = useState(false);
@@ -108,7 +110,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				item,
 				selected: selectedItem && itemToString(item) === itemToString(selectedItem) ? true : false,
 				focused: focusedItem && itemToString(item) === itemToString(focusedItem) ? true : false,
-
+				itemRef: (ref: HTMLElement) => {
+					console.log('ref', ref);
+				},
 				setSelected: (selected: boolean) => {
 					if (selected) {
 						setSelectedItem(item);
@@ -180,6 +184,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		width = { width: props.width };
 	}
 
+	console.log('focusedItem', focusedItem);
 	return {
 		debounce: props.debounce ?? 100,
 		selectedItem,
@@ -194,6 +199,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		setFocused,
 		open,
 		setOpen,
+		listRef: (ref: HTMLElement) => {
+			listRef.current = ref;
+		},
 		onInputClick: () => {
 			setSearch('');
 		},
@@ -219,6 +227,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				if (nextIndex < searchResults.length) {
 					setFocusedItem(searchResults[nextIndex]?.item ?? null);
 				}
+				if (listRef.current) {
+					listRef.current.children.item(nextIndex)?.scrollIntoView({ block: 'nearest' });
+				}
 			}
 			if (key.key === 'ArrowUp') {
 				// Set the focused item to the previous item in the list
@@ -230,6 +241,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				const nextIndex = index - 1;
 				if (nextIndex >= 0) {
 					setFocusedItem(searchResults[nextIndex]?.item ?? null);
+				}
+				if (listRef.current) {
+					listRef.current.children.item(nextIndex)?.scrollIntoView({ block: 'nearest' });
 				}
 			}
 			if (key.key === 'Enter') {

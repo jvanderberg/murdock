@@ -19,18 +19,30 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 			(focus)="state.setFocused(true)"
 			(input)="state.setSearch !== undefined && state.setSearch(searchBox.value)"
 			(click)="state.onInputClick()"
+			(keydown)="state.handleKey($event)"
 		/>
-		@if (state.open) {
-			<div class="mk-select-dropdown-wrapper">
-				<div class="mk-select-dropdown">
-					@for (item of state.searchResults; track itemToString(item.item)) {
-						<div aria-hidden="true" class="mk-select-dropdown-item" (click)="item.setSelected(true)">
-							{{ itemToString(item.item) }}
-						</div>
-					}
-				</div>
+
+		<div class="mk-select-dropdown-wrapper">
+			<div
+				#listRef
+				[class]="{ 'mk-select-dropdown': true, hidden: !state.open }"
+				(load)="state?.listRef(listRef)"
+			>
+				@for (item of state.searchResults; track itemToString(item.item)) {
+					<div
+						aria-hidden="true"
+						[class]="{ 'mk-select-dropdown-item': true, 'focus-item': item.focused }"
+						(click)="item.setSelected(true)"
+					>
+						{{ itemToString(item.item) }}
+					</div>
+				}
 			</div>
-		}
+			<!-- This is a bit of a hack to get the list's ref into the state manager, has to be a better way -->
+			<div style="display:none">
+				{{ state?.listRef(listRef) }}
+			</div>
+		</div>
 	</div>`,
 	standalone: true
 })
