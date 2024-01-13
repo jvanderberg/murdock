@@ -14,7 +14,11 @@
     ],
     "scripts": {
         "build": "pnpm install && cd murdock-core && npm run build && cd ../murdock-react && npm run build && cd ../murdock-vue && npm run build && cd ../murdock-angular && npm run build",
+        "build-angular": "npm -w murdock-core run build && npm -w murdock-angular run build",
+        "build-react": "npm -w murdock-core run build && npm -w murdock-react run build",
         "vue-examples": "npm -w vue-examples run dev",
+        "react-examples": "npm -w react-examples run dev",
+        "angular-examples": "rm -rf angular-examples/.angular/cache && npm -w angular-examples run dev",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon --verbose --exec 'npm -w murdock-core run build && npm -w murdock-react run dev '"
     },

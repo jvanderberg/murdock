@@ -17,7 +17,7 @@ export default defineConfig({
 		assetsDir: new URL('./src/css', import.meta.url).pathname,
 		rollupOptions: {
 			output: {
-				sourcemap: true,
+				sourcemap: 'inline',
 				assetFileNames: '[name].[ext]'
 			}
 		}

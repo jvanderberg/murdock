@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
  * @param managedComponent {ManagedComponent<S, P>} The headless component to manage.
  * @param props {P} The Props type. Props are controlled externally, the component cannot change them.
  * @param state {S} The State type. State is controlled by the component, and can only be changed by the component.
- * @returns {S} The state of the component as a function of it's props and it's own internal state.
+ * @returns {S} The state of the component as a function of its props and its own internal state.
  */
 export function useHeadlessComponent<P extends Record<string, unknown>, S extends Record<string, unknown>>(
 	component: HeadlessComponent<P, S>,

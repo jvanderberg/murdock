@@ -63,7 +63,7 @@ export class StateManager {
 			if (remoteValue === undefined) {
 				throw new Error('setter was provided to a component, but no matching value was provided');
 			}
-			return [remoteValue, remoteSet as (state: T) => void];
+			return [remoteValue, state => setTimeout(() => remoteSet(state), 0)];
 		}
 
 		if (this.storage.length <= this.pointer) {
@@ -121,14 +121,16 @@ export class StateManager {
 			}
 		}
 		if (trigger) {
-			this.inCallback = true;
-			cb();
-			this.inCallback = false;
-
 			try {
+				this.inCallback = true;
+				cb();
+				this.inCallback = false;
+
 				this.storage[this.pointer - 1].value = deps;
 			} catch (e) {
-				console.log(e);
+				console.log('Error in useEffect', e);
+				this.inCallback = false;
+				throw e;
 			}
 		}
 	};

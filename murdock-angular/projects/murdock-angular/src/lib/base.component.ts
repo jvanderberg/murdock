@@ -1,23 +1,23 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, DoCheck, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import { HeadlessComponent, StateManager } from '@murdock-ui/murdock-core';
 
 export type HeadlessBase<S> = { state: S };
 export type HeadlessClass<P, S> = P & { state: S };
 
 @Component({
+	// eslint-disable-next-line @angular-eslint/component-selector
 	selector: 'select-component',
 	template: '<div>Do not use this component directly, you must extend it</div>',
 	standalone: true
 })
 export class HeadlessAngularComponent<P extends Record<string, unknown>, S extends Record<string, unknown>>
-	implements HeadlessBase<S>
+	implements HeadlessBase<S>, OnDestroy, OnChanges, DoCheck
 {
 	state: S = {} as S;
 	private sm: StateManager;
 	protected component?: HeadlessComponent<P, S>;
 	private changed = true;
 	constructor() {
-		console.log('constructor');
 		this.sm = new StateManager(() => {
 			this.changed = true;
 		});
@@ -32,7 +32,6 @@ export class HeadlessAngularComponent<P extends Record<string, unknown>, S exten
 		if (!this.changed) return;
 		if (!this.component) throw new Error('component must be set');
 		try {
-			console.log('ngDoCheck');
 			const props = getRenderProps(this as Record<string, unknown>);
 			const newState = this.sm.render(this.component as HeadlessComponent<P, S>, {
 				...(this as unknown as P),

@@ -6,7 +6,8 @@
         "start": "ng serve",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
-        "test": "ng test"
+        "test": "ng test",
+        "lint": "ng lint"
     },
     "private": true,
     "dependencies": {
@@ -18,16 +19,24 @@
         "@angular/platform-browser": "^17.0.0",
         "@angular/platform-browser-dynamic": "^17.0.0",
         "@angular/router": "^17.0.0",
+        "@murdock-ui/murdock-core": "workspace:^",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
-        "zone.js": "~0.14.2",
-        "@murdock-ui/murdock-core": "workspace:^"
+        "zone.js": "~0.14.2"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^17.0.9",
+        "@angular-eslint/builder": "17.2.0",
+        "@angular-eslint/eslint-plugin": "17.2.0",
+        "@angular-eslint/eslint-plugin-template": "17.2.0",
+        "@angular-eslint/schematics": "17.2.0",
+        "@angular-eslint/template-parser": "17.2.0",
         "@angular/cli": "^17.0.9",
         "@angular/compiler-cli": "^17.0.0",
         "@types/jasmine": "~5.1.0",
+        "@typescript-eslint/eslint-plugin": "6.18.0",
+        "@typescript-eslint/parser": "6.18.0",
+        "eslint": "^8.56.0",
         "jasmine-core": "~5.1.0",
         "karma": "~6.4.0",
         "karma-chrome-launcher": "~3.2.0",
@@ -36,5 +45,18 @@
         "karma-jasmine-html-reporter": "~2.1.0",
         "ng-packagr": "^17.0.0",
         "typescript": "~5.2.2"
+    },
+    "module": "./dist/murdock-angular/fesm2022/murdock-ui-murdock-angular.mjs",
+    "typings": "./dist/murdock-angular/index.d.ts",
+    "exports": {
+        "./package.json": {
+            "default": "./dist/murdock-angular/package.json"
+        },
+        ".": {
+            "types": "./dist/murdock-angular/index.d.ts",
+            "esm2022": "./dist/murdock-angular/esm2022/murdock-ui-murdock-angular.mjs",
+            "esm": "./dist/murdock-angular/esm2022/murdock-ui-murdock-angular.mjs",
+            "default": "./dist/murdock-angular/fesm2022/murdock-ui-murdock-angular.mjs"
+        }
     }
 }

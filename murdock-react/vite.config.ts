@@ -43,7 +43,7 @@ export default defineConfig({
 		sourcemap: true,
 
 		rollupOptions: {
-			external: ['react', 'react-dom', 'react/jsx-runtime'],
+			external: ['react', 'react-dom', 'react/jsx-runtime', '@murdock-ui/murdock-core'],
 			output: {
 				// Provide global variables to use in the UMD build
 				// for externalized deps

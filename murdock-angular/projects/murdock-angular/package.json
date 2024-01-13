@@ -1,12 +1,15 @@
 {
-  "name": "murdock-angular",
-  "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^17.0.0",
-    "@angular/core": "^17.0.0"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+    "name": "@murdock-ui/murdock-angular",
+    "version": "0.0.1",
+    "peerDependencies": {
+        "@angular/common": "^17.0.0",
+        "@angular/core": "^17.0.0"
+    },
+    "devDependencies": {
+        "@murdock-ui/murdock-core": "workspace:^"
+    },
+    "dependencies": {
+        "tslib": "^2.3.0",
+    },
+    "sideEffects": false
 }
