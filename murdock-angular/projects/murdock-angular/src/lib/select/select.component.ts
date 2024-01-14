@@ -10,17 +10,20 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 		[class]="state.rootClassName"
 		[style]="{ width: state.width, height: state.height }"
 	>
-		<input
-			tabindex="0"
-			#searchBox
-			class="mk-select-input"
-			[value]="state.search"
-			(blur)="state.setFocused(false)"
-			(focus)="state.setFocused(true)"
-			(input)="state.setSearch !== undefined && state.setSearch(searchBox.value)"
-			(click)="state.onInputClick()"
-			(keydown)="state.handleKey($event)"
-		/>
+		<div class="mk-select-wrapper">
+			<input
+				#searchBox
+				class="mk-select-input"
+				[value]="state.search"
+				(blur)="state.setFocused(false)"
+				(focus)="state.setFocused(true)"
+				(input)="state.setSearch !== undefined && state.setSearch(searchBox.value)"
+				(keydown)="state.handleKey($event)"
+				(click)="state.onInputClick()"
+			/>
+
+			<button (click)="searchBox.focus()" class="mk-select-menu-button"></button>
+		</div>
 
 		<div class="mk-select-dropdown-wrapper">
 			<div

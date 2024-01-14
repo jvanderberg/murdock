@@ -83,10 +83,10 @@ export class StateManager {
 
 				if (!this.onStateChangeScheduled) {
 					this.onStateChangeScheduled = true;
-					setTimeout(() => {
+					Promise.resolve(1).then(() => {
 						this.onStateChangeScheduled = false;
 						this.onStateChanged();
-					}, 0);
+					});
 				}
 			};
 			this.storage.push({

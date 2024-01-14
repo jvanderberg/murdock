@@ -1,12 +1,14 @@
 :host {
 	--mk-padding: 0.5em;
 	--mk-corner-radius: 4px;
-	--mk-text-color: black;
+	--mk-text-color: red;
+	--mk-padding: 5px;
 	--mk-background-color: #ffffff;
 	--mk-background-color-contrast: #fcfcfc;
 	--mk-primary-color: #148c9f;
-	--mk-animation-speed: 0.2s;
+	--mk-animation-speed: 0.3s;
 	--mk-reverse-text-color: white;
+	--mk-select-max-menu-height: 200px;
 }
 
 @media (prefers-color-scheme: dark) {

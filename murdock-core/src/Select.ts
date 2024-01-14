@@ -86,9 +86,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				setOpen(false);
 			}
 		} else {
-			setTimeout(() => {
-				setOpen(false);
-			}, 100);
+			setOpen(false);
 
 			if (selectedItem !== null) {
 				setSearch(itemToString(selectedItem));
@@ -102,18 +100,25 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 			return res;
 		});
+		const currentItem = selectedItem ? itemToString(selectedItem) : '';
 		const temp2 = temp.filter(
-			item => props.searchFunction || !search || itemToString(item).toLowerCase().includes(search.toLowerCase())
+			item =>
+				props.searchFunction ||
+				!search ||
+				search === currentItem ||
+				itemToString(item).toLowerCase().includes(search.toLowerCase())
 		);
+
 		const temp3 = temp2.slice(0, limit).map(item => {
 			return {
 				item,
 				selected: selectedItem && itemToString(item) === itemToString(selectedItem) ? true : false,
 				focused: focusedItem && itemToString(item) === itemToString(focusedItem) ? true : false,
-				itemRef: (ref: HTMLElement) => {
-					console.log('ref', ref);
-				},
+
 				setSelected: (selected: boolean) => {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					console.log('setSelected', selected, (item as any).name.common);
+
 					if (selected) {
 						setSelectedItem(item);
 						setSearch(itemToString(item));
@@ -124,7 +129,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				}
 			};
 		});
-
 		setSearchResults(temp3 ?? []);
 	}, [focusedItem, selectedItem, results, search]);
 
@@ -146,7 +150,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				async function handleSearch() {
 					if (search === '' || (selectedItem !== null && itemToString(selectedItem) === search)) {
 						setFetching(false);
-						//setSearchResults([]);
 						return;
 					}
 
@@ -184,7 +187,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		width = { width: props.width };
 	}
 
-	console.log('focusedItem', focusedItem);
 	return {
 		debounce: props.debounce ?? 100,
 		selectedItem,
