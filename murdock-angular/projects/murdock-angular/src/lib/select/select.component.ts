@@ -21,8 +21,14 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 				(keydown)="state.handleKey($event)"
 				(click)="state.onInputClick()"
 			/>
-
-			<button (click)="searchBox.focus()" class="mk-select-menu-button"></button>
+			@if (state.selectedItem === null) {
+				<button (click)="state.setInputFocus(); state.onInputClick()" class="mk-select-menu-button"></button>
+			} @else {
+				<button
+					(click)="state.clear(); searchBox.focus(); state.onInputClick()"
+					class="mk-select-clear-button"
+				></button>
+			}
 		</div>
 
 		<div class="mk-select-dropdown-wrapper">
@@ -44,6 +50,9 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 			<!-- This is a bit of a hack to get the list's ref into the state manager, has to be a better way -->
 			<div style="display:none">
 				{{ state?.listRef(listRef) }}
+			</div>
+			<div style="display:none">
+				{{ state?.inputRef(searchBox) }}
 			</div>
 		</div>
 	</div>`,

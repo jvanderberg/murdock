@@ -20,7 +20,7 @@
 	--mk-select-width: 200px;
 	--mk-select-height: 60px;
 	--mk-primary-color: #ab0000;
-	--mk-padding: 20px;
+	--mk-padding: 0.5em;
 	--mk-corner-radius: 10px;
 	--mk-select-font: 20px terminal, monospace;
 	@media (prefers-color-scheme: dark) {

@@ -42,7 +42,7 @@ function itemToString(item: Country): string {
 	</div>
 </template>
 
-<style scoped>
+<style>
 .logo {
 	height: 6em;
 	padding: 1.5em;
@@ -56,32 +56,33 @@ function itemToString(item: Country): string {
 	filter: drop-shadow(0 0 2em #42b883aa);
 }
 :root {
-	--mk-padding: 0.5em;
+	--mk-padding: 1em;
 	--mk-corner-radius: 5px;
-	--mk-text-color: #030303;
+	--mk-text-color: #000000;
+	--mk-text-color-reverse: #ffffff;
 	--mk-background-color: #ffffff;
 	--mk-background-color-contrast: #fcfcfc;
 	--mk-primary-color: #148c9f;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
 	:root {
 		--mk-text-color: #fff;
 		--mk-background-color: #242424;
 		--mk-background-color-contrast: #2c2c2c;
 	}
-}
+} */
 
-#country-select {
+/* #country-select {
 	--mk-select-max-menu-height: 500px;
 	--mk-select-width: 400px;
-	--mk-select-height: 60px;
+	--mk-text-color: red;
 	--mk-primary-color: #ab0000;
-	--mk-padding: 20px;
+	--mk-padding: 1em;
 	--mk-corner-radius: 10px;
 	--mk-select-font: 20px terminal, monospace;
 	@media (prefers-color-scheme: dark) {
 		--mk-primary-color: #8f00fd;
 	}
-}
+} */
 </style>

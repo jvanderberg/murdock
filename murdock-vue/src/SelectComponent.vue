@@ -21,16 +21,38 @@ const { state, renderCount } = useHeadlessComponent(
 		:className="state.rootClassName"
 		:style="{ width: state.width + 'px', height: state.height + 'px' }"
 	>
-		<input
-			className="mk-select-input"
-			:value="state.search"
-			@click="() => state.onInputClick()"
-			@input="(e) => state.setSearch((e.currentTarget as HTMLInputElement)?.value)"
-			@blur="() => state.setFocused(false)"
-			@focus="() => state.setFocused(true)"
-			:style="{ width: state.width + 'px', height: state.height + 'px' }"
-			@keydown="(e) => state.handleKey(e)"
-		/>
+		<div class="mk-select-wrapper">
+			<input
+				:ref="state.inputRef"
+				className="mk-select-input"
+				:value="state.search"
+				@click="() => state.onInputClick()"
+				@input="(e) => state.setSearch((e.currentTarget as HTMLInputElement)?.value)"
+				@blur="() => state.setFocused(false)"
+				@focus="() => state.setFocused(true)"
+				:style="{ width: state.width + 'px', height: state.height + 'px' }"
+				@keydown="(e) => state.handleKey(e)"
+			/>
+
+			<button
+				v-if="state.selectedItem === null"
+				@click="
+					state.setInputFocus();
+					state.onInputClick();
+				"
+				className="mk-select-menu-button"
+			/>
+
+			<button
+				v-if="state.selectedItem !== null"
+				@click="
+					state.clear();
+					state.setInputFocus();
+					state.onInputClick();
+				"
+				className="mk-select-clear-button"
+			/>
+		</div>
 		<div style="display: none">{{ renderCount }}</div>
 		<div className="mk-select-dropdown-wrapper">
 			<div

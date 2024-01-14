@@ -1,8 +1,7 @@
 :host {
 	--mk-padding: 0.5em;
 	--mk-corner-radius: 4px;
-	--mk-text-color: red;
-	--mk-padding: 5px;
+	--mk-padding: 0.5em;
 	--mk-background-color: #ffffff;
 	--mk-background-color-contrast: #fcfcfc;
 	--mk-primary-color: #148c9f;

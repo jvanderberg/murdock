@@ -49,13 +49,16 @@ export type SelectState<T> = {
 	width?: number;
 	rootClassName?: string;
 	listRef?: (ref: HTMLElement) => void;
+	inputRef?: (ref: HTMLInputElement) => void;
 	handleKey: (key: KeyboardEvent) => void;
+	setInputFocus: () => void;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
 	const listRef = useRef<HTMLElement>();
+	const inputRef = useRef<HTMLElement>();
 	const [search, setSearch] = useState<string>('', props.search, props.setSearch);
 	const [searchResults, setSearchResults] = useState<SelectResults<T>>([]);
 	const [fetching, setFetching] = useState(false);
@@ -122,6 +125,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 					if (selected) {
 						setSelectedItem(item);
 						setSearch(itemToString(item));
+						setFocusedItem(null);
 						//setSearchResults([]);
 					} else {
 						setSelectedItem(null);
@@ -204,6 +208,12 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		listRef: (ref: HTMLElement) => {
 			listRef.current = ref;
 		},
+		inputRef: (ref: HTMLElement) => {
+			inputRef.current = ref;
+		},
+		setInputFocus: () => {
+			inputRef.current?.focus();
+		},
 		onInputClick: () => {
 			setSearch('');
 		},
@@ -260,6 +270,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 					const item = searchResults[index]?.item ?? null;
 					if (item !== null) {
 						setSelectedItem(item);
+						setFocusedItem(null);
 						setSearch(itemToString(item));
 						setTimeout(() => {
 							setOpen(false);
