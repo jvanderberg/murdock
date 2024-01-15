@@ -1,8 +1,9 @@
-import { Hooks } from './index.js';
+import { Hooks, StateManager } from './index.js';
 
 export type SelectProps<T> = {
 	id?: string;
 	items?: T[];
+	placeholder?: string;
 	searchFunction?: (search: string, abortController: AbortController) => Promise<T[]>;
 	debounce?: number;
 	search?: string;
@@ -26,9 +27,31 @@ export type SelectResults<T> = Array<{
 	setSelected: (selected: boolean) => void;
 }>;
 
+const useRunLater = ({ useState, useRef }: Hooks, func: () => void, delay: number) => {
+	const [render, setRender] = useState(0);
+	const triggered = useRef(false);
+	if (triggered.current) {
+		console.log('triggerRunLater runing func');
+
+		func();
+		triggered.current = false;
+	}
+
+	return {
+		trigger: () => {
+			if (!triggered.current) {
+				console.log('triggerRunLater');
+				triggered.current = true;
+				setTimeout(() => setRender(render + 1), delay);
+			}
+		}
+	};
+};
+
 export type SelectState<T> = {
 	id?: string;
 	items?: T[];
+	placeholder?: string;
 	searchFunction?: (search: string, abortController: AbortController) => Promise<T[]>;
 	debounce: number;
 	search: string;
@@ -43,7 +66,8 @@ export type SelectState<T> = {
 	open: boolean;
 	setOpen: (value: boolean) => void;
 	onInputClick: () => void;
-	clear: () => void;
+	onClearButtonClick: () => void;
+	onMenuButtonClick: () => void;
 	itemToString: (item: T) => string;
 	height?: number;
 	width?: number;
@@ -51,14 +75,13 @@ export type SelectState<T> = {
 	listRef?: (ref: HTMLElement) => void;
 	inputRef?: (ref: HTMLInputElement) => void;
 	handleKey: (key: KeyboardEvent) => void;
-	setInputFocus: () => void;
 };
 
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
 	const listRef = useRef<HTMLElement>();
-	const inputRef = useRef<HTMLElement>();
+	const inputRef = useRef<HTMLInputElement>();
 	const [search, setSearch] = useState<string>('', props.search, props.setSearch);
 	const [searchResults, setSearchResults] = useState<SelectResults<T>>([]);
 	const [fetching, setFetching] = useState(false);
@@ -81,23 +104,51 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			'Must specify either items or search, either provide a static list of items, or a dynamic search function.'
 		);
 	}
+	// This resets the item string to the selected item after a delay, otherwise the search string could change search results
+	// Which might cause the selected item to be filtered out, so it doesn't register a click
+	const itemStringRunLater = useRunLater(
+		{ useEffect, useRef, useState },
+		() => {
+			if (selectedItem) {
+				setSearch(itemToString(selectedItem));
+				setSearchResults([]);
+			}
+		},
+		50
+	);
+	const clearSearchAfterItemSet = useRunLater(
+		{ useEffect, useRef, useState },
+		() => {
+			console.log('Clear search after item set');
+			setSearchResults([]);
+			setResults([]);
+			return;
+		},
+		50
+	);
 	useEffect(() => {
 		if (focused) {
 			if (searchResults.length > 0) {
 				setOpen(true);
 			} else {
-				setOpen(false);
+				setTimeout(() => setOpen(false), 50);
 			}
 		} else {
-			setOpen(false);
+			setTimeout(() => setOpen(false), 50);
 
 			if (selectedItem !== null) {
-				setSearch(itemToString(selectedItem));
+				itemStringRunLater.trigger();
+				// setSearch(itemToString(selectedItem));
 			}
 		}
 	}, [focused, selectedItem, itemToString, searchResults]);
 
 	useEffect(() => {
+		if (selectedItem && search === '') {
+			setSelectedItem(null);
+			return;
+		}
+
 		const temp = results.sort(sort).filter(item => {
 			const res = !selectedItem || itemToString(item) !== itemToString(selectedItem);
 
@@ -126,7 +177,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 						setSelectedItem(item);
 						setSearch(itemToString(item));
 						setFocusedItem(null);
-						//setSearchResults([]);
+						clearSearchAfterItemSet.trigger();
 					} else {
 						setSelectedItem(null);
 					}
@@ -193,6 +244,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 	return {
 		debounce: props.debounce ?? 100,
+		placeholder: props.placeholder,
 		selectedItem,
 		setSelectedItem,
 		search,
@@ -208,20 +260,24 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		listRef: (ref: HTMLElement) => {
 			listRef.current = ref;
 		},
-		inputRef: (ref: HTMLElement) => {
+		inputRef: (ref: HTMLInputElement) => {
 			inputRef.current = ref;
 		},
-		setInputFocus: () => {
-			inputRef.current?.focus();
-		},
 		onInputClick: () => {
-			setSearch('');
+			//setSearch('');
+			if (selectedItem && search === itemToString(selectedItem)) {
+				inputRef.current?.setSelectionRange(0, search.length);
+			}
 		},
-		clear: () => {
+		onClearButtonClick: () => {
 			setSearch('');
 			setSelectedItem(null);
-			setSearchResults([]);
 		},
+		onMenuButtonClick: () => {
+			inputRef.current?.focus();
+			setSearch('');
+		},
+
 		itemToString,
 		...height,
 		...width,
@@ -229,6 +285,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		rootClassName: props.overrideClassName || 'mk-select-root',
 		handleKey: (key: KeyboardEvent) => {
 			if (key.key === 'ArrowDown') {
+				if (!searchResults || searchResults.length === 0) {
+					return;
+				}
 				setOpen(true);
 				if (selectedItem && itemToString(selectedItem) === search) {
 					setSearch('');
@@ -242,6 +301,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				if (listRef.current) {
 					listRef.current.children.item(nextIndex)?.scrollIntoView({ block: 'nearest' });
 				}
+				return;
 			}
 			if (key.key === 'ArrowUp') {
 				// Set the focused item to the previous item in the list
@@ -257,6 +317,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				if (listRef.current) {
 					listRef.current.children.item(nextIndex)?.scrollIntoView({ block: 'nearest' });
 				}
+				return;
 			}
 			if (key.key === 'Enter') {
 				if (selectedItem && itemToString(selectedItem) === search && selectedItem === focusedItem) {
@@ -274,13 +335,15 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 						setSearch(itemToString(item));
 						setTimeout(() => {
 							setOpen(false);
-						}, 100);
+						}, 50);
 						//setSearchResults([]);
 					}
 				}
+				return;
 			}
 			if (key.key === 'Escape') {
 				setOpen(false);
+				return;
 			}
 		}
 	};

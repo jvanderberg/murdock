@@ -9,6 +9,7 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
         <div id={state.id} className={rootClassName} style={{ height: state.height, width: state.width }}>
             <div className="mk-select-wrapper">
                 <input
+                    placeholder={state.placeholder}
                     aria-expanded={state.open}
                     aria-haspopup="listbox"
                     aria-owns={state.id + '-menu'}
@@ -26,19 +27,12 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
                     onKeyDown={e => state.handleKey(e as unknown as KeyboardEvent)}
                 />
                 {state.selectedItem && (
-                    <button className="mk-select-clear-button" onClick={() => {
-                        state.clear();
-                        state.setInputFocus();
-                        state.onInputClick();
-                    }}></button>
+                    <button className="mk-select-clear-button" onClick={state.onClearButtonClick}></button>
                 )}
                 {!state.selectedItem && (
                     <button
                         className="mk-select-menu-button"
-                        onClick={() => {
-                            state.setInputFocus();
-                            state.onInputClick();
-                        }}
+                        onClick={state.onMenuButtonClick}
                     ></button>
                 )}
             </div>

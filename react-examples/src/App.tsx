@@ -33,6 +33,7 @@ function App() {
             <h1>{selectedItem?.name.common}</h1>
             <SelectComponent
                 id="country1"
+                placeholder='Search for a country'
                 width={300}
                 overrideClassName="mk-select-root myclass"
                 selectedItem={selectedItem}
