@@ -111,7 +111,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		() => {
 			if (selectedItem) {
 				setSearch(itemToString(selectedItem));
-				setSearchResults([]);
 			}
 		},
 		50
