@@ -104,50 +104,31 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			'Must specify either items or search, either provide a static list of items, or a dynamic search function.'
 		);
 	}
-	// This resets the item string to the selected item after a delay, otherwise the search string could change search results
-	// Which might cause the selected item to be filtered out, so it doesn't register a click
-	const itemStringRunLater = useRunLater(
+
+	// This is a bit of a hack because clicking on the menu loses focus momentarily, the menu code
+	// sets focus back to the input, so we trigger this in the next render cycle after the input has
+	// focus again
+	const checkFocusLater = useRunLater(
 		{ useEffect, useRef, useState },
 		() => {
-			if (selectedItem) {
-				setSearch(itemToString(selectedItem));
-			}
-		},
-		50
-	);
-	const clearSearchAfterItemSet = useRunLater(
-		{ useEffect, useRef, useState },
-		() => {
-			console.log('Clear search after item set');
-			setSearchResults([]);
-			setResults([]);
-			return;
-		},
-		50
-	);
-	useEffect(() => {
-		if (focused) {
-			if (searchResults.length > 0) {
+			if (focused && !selectedItem) {
 				setOpen(true);
 			} else {
-				setTimeout(() => setOpen(false), 50);
+				setOpen(false);
+				// If we lost focus, with a selected item, make sure to reflect that state in the search box
+				if (selectedItem) {
+					setSearch(itemToString(selectedItem));
+				}
 			}
-		} else {
-			setTimeout(() => setOpen(false), 50);
-
-			if (selectedItem !== null) {
-				itemStringRunLater.trigger();
-				// setSearch(itemToString(selectedItem));
-			}
-		}
-	}, [focused, selectedItem, itemToString, searchResults]);
+		},
+		0
+	);
 
 	useEffect(() => {
-		if (selectedItem && search === '') {
-			setSelectedItem(null);
-			return;
-		}
+		checkFocusLater.trigger();
+	}, [focused]);
 
+	useEffect(() => {
 		const temp = results.sort(sort).filter(item => {
 			const res = !selectedItem || itemToString(item) !== itemToString(selectedItem);
 
@@ -174,9 +155,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 					if (selected) {
 						setSelectedItem(item);
-						setSearch(itemToString(item));
-						setFocusedItem(null);
-						clearSearchAfterItemSet.trigger();
+
+						//inputRef.current?.focus();
+						//clearSearchAfterItemSet.trigger();
 					} else {
 						setSelectedItem(null);
 					}
@@ -185,6 +166,20 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		});
 		setSearchResults(temp3 ?? []);
 	}, [focusedItem, selectedItem, results, search]);
+
+	// If the selected item changes, update the search string to match, close the search box, and clear
+	// search results, if not static results
+	useEffect(() => {
+		if (selectedItem) {
+			setSearch(itemToString(selectedItem));
+			setOpen(false);
+			inputRef.current?.focus();
+			if (props.searchFunction !== undefined) {
+				setSearchResults([]);
+				setResults([]);
+			}
+		}
+	}, [selectedItem]);
 
 	useEffect(() => {
 		if (timer.current) {
@@ -263,7 +258,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			inputRef.current = ref;
 		},
 		onInputClick: () => {
-			//setSearch('');
 			if (selectedItem && search === itemToString(selectedItem)) {
 				inputRef.current?.setSelectionRange(0, search.length);
 			}
@@ -271,6 +265,10 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		onClearButtonClick: () => {
 			setSearch('');
 			setSelectedItem(null);
+			inputRef.current?.focus();
+			if (props.searchFunction === undefined) {
+				setOpen(true);
+			}
 		},
 		onMenuButtonClick: () => {
 			inputRef.current?.focus();
@@ -331,10 +329,11 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 					if (item !== null) {
 						setSelectedItem(item);
 						setFocusedItem(null);
-						setSearch(itemToString(item));
-						setTimeout(() => {
-							setOpen(false);
-						}, 50);
+						// setSearch(itemToString(item));
+
+						// setTimeout(() => {
+						// 	setOpen(false);
+						// }, 50);
 						//setSearchResults([]);
 					}
 				}
@@ -344,6 +343,10 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				setOpen(false);
 				return;
 			}
+			if (key.key === 'Control' || key.key === 'Alt' || key.key === 'Shift') {
+				return;
+			}
+			setOpen(true);
 		}
 	};
 }

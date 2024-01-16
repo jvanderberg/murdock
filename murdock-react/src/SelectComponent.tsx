@@ -6,7 +6,13 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
     const state = useHeadlessComponent(MKSelect<T>, props);
     const rootClassName = state.rootClassName ?? '';
     return (
-        <div id={state.id} className={rootClassName} style={{ height: state.height, width: state.width }}>
+        <div
+            onFocus={() => { console.log('focusZZZ'); state.setFocused(true) }}
+            onBlur={() => { console.log('focusoutZZZ'); state.setFocused(false) }}
+            id={state.id}
+            className={rootClassName}
+            style={{ height: state.height, width: state.width }}
+        >
             <div className="mk-select-wrapper">
                 <input
                     placeholder={state.placeholder}
@@ -21,39 +27,37 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
                     className="mk-select-input"
                     onClick={state.onInputClick}
                     value={state.search}
-                    onFocus={() => state.setFocused(true)}
-                    onBlur={() => state.setFocused(false)}
                     onInput={e => state.setSearch(e.currentTarget.value)}
                     onKeyDown={e => state.handleKey(e as unknown as KeyboardEvent)}
+
                 />
                 {state.selectedItem && (
                     <button className="mk-select-clear-button" onClick={state.onClearButtonClick}></button>
                 )}
                 {!state.selectedItem && (
-                    <button
-                        className="mk-select-menu-button"
-                        onClick={state.onMenuButtonClick}
-                    ></button>
+                    <button className="mk-select-menu-button" onClick={state.onMenuButtonClick}></button>
                 )}
             </div>
-
-            <div className="mk-select-dropdown-wrapper">
-                <div
-                    ref={ref => state.listRef && state.listRef(ref as HTMLDivElement)}
-                    id={state.id + '-menu'}
-                    className={`mk-select-dropdown${!state.open ? ' hidden' : ''}`}
-                >
-                    {state.searchResults?.map(item => (
-                        <div
-                            key={state.itemToString(item.item)}
-                            className={`mk-select-dropdown-item${item.focused ? ' focus-item' : ''}`}
-                            onClick={() => item.setSelected(true)}
-                        >
-                            {state.itemToString(item.item)}
-                        </div>
-                    ))}
+            {state.searchResults?.length > 0 && (
+                < div tabIndex={-1} className="mk-select-dropdown-wrapper">
+                    <div tabIndex={-1}
+                        ref={ref => state.listRef && state.listRef(ref as HTMLDivElement)}
+                        id={state.id + '-menu'}
+                        className={`mk-select-dropdown${!state.open ? ' hidden' : ''}`}
+                    >
+                        {state.searchResults?.map(item => (
+                            <div tabIndex={-1}
+                                key={state.itemToString(item.item)}
+                                className={`mk-select-dropdown-item${item.focused ? ' focus-item' : ''}`}
+                                onClick={() => item.setSelected(true)}
+                            >
+                                {state.itemToString(item.item)}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </div>
+            )
+            }
+        </div >
     );
 };
