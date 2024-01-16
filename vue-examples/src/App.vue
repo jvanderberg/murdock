@@ -9,6 +9,21 @@ export type Country = {
 		common: string;
 	};
 };
+
+type Fruit = {
+	id: string;
+	name: string;
+};
+const fruits: Fruit[] = [
+	{ id: 'apple', name: 'Apple' },
+	{ id: 'banana', name: 'Banana' },
+	{ id: 'strawberry', name: 'Strawberry' },
+	{ id: 'orange', name: 'Orange' },
+	{ id: 'grape', name: 'Grape' },
+	{ id: 'pineapple', name: 'Pineapple' },
+	{ id: 'watermelon', name: 'Watermelon' }
+];
+
 const searchFunc = async (value: string, abortController: AbortController): Promise<Country[]> => {
 	const results = await fetch('https://restcountries.com/v3.1/name/' + value, {
 		signal: abortController.signal
@@ -17,12 +32,15 @@ const searchFunc = async (value: string, abortController: AbortController): Prom
 	if (abortController.signal.aborted) {
 		throw new Error('Aborted');
 	}
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return await results.json();
 };
 
 function itemToString(item: Country): string {
 	return item?.name?.common;
+}
+
+function fruitToString(fruit: Fruit): string {
+	return fruit.name;
 }
 </script>
 
@@ -32,6 +50,7 @@ function itemToString(item: Country): string {
 			:id="'country-select'"
 			v-model:search="search"
 			v-model:selected-item="selectedItem"
+			:placeholder="'Search for a country'"
 			:search-function="searchFunc"
 			:debounce="100"
 			:item-to-string="itemToString"
@@ -39,6 +58,9 @@ function itemToString(item: Country): string {
 		/>
 		{{ search }}
 		{{ selectedItem }}
+	</div>
+	<div>
+		<SelectComponent :id="'fruit-select'" :items="fruits" :item-to-string="fruitToString" />
 	</div>
 </template>
 

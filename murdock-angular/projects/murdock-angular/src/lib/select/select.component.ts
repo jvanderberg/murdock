@@ -15,6 +15,7 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 				#searchBox
 				class="mk-select-input"
 				[value]="state.search"
+				[placeholder]="state.placeholder || ''"
 				(blur)="state.setFocused(false)"
 				(focus)="state.setFocused(true)"
 				(input)="state.setSearch !== undefined && state.setSearch(searchBox.value)"
@@ -22,39 +23,38 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 				(click)="state.onInputClick()"
 			/>
 			@if (state.selectedItem === null) {
-				<button (click)="state.setInputFocus(); state.onInputClick()" class="mk-select-menu-button"></button>
+				<button (click)="state.onMenuButtonClick()" class="mk-select-menu-button"></button>
 			} @else {
-				<button
-					(click)="state.clear(); searchBox.focus(); state.onInputClick()"
-					class="mk-select-clear-button"
-				></button>
+				<button (click)="state.onClearButtonClick()" class="mk-select-clear-button"></button>
 			}
 		</div>
 
-		<div class="mk-select-dropdown-wrapper">
-			<div
-				#listRef
-				[class]="{ 'mk-select-dropdown': true, hidden: !state.open }"
-				(load)="state?.listRef(listRef)"
-			>
-				@for (item of state.searchResults; track itemToString(item.item)) {
-					<div
-						aria-hidden="true"
-						[class]="{ 'mk-select-dropdown-item': true, 'focus-item': item.focused }"
-						(click)="item.setSelected(true)"
-					>
-						{{ itemToString(item.item) }}
-					</div>
-				}
+		@if (state.searchResults?.length || 0 > 0) {
+			<div class="mk-select-dropdown-wrapper">
+				<div
+					#listRef
+					[class]="{ 'mk-select-dropdown': true, hidden: !state.open }"
+					(load)="state?.listRef(listRef)"
+				>
+					@for (item of state.searchResults; track itemToString(item.item)) {
+						<div
+							aria-hidden="true"
+							[class]="{ 'mk-select-dropdown-item': true, 'focus-item': item.focused }"
+							(click)="item.setSelected(true)"
+						>
+							{{ itemToString(item.item) }}
+						</div>
+					}
+				</div>
+				<!-- This is a bit of a hack to get the list's ref into the state manager, has to be a better way -->
+				<div style="display:none">
+					{{ state?.listRef(listRef) }}
+				</div>
+				<div style="display:none">
+					{{ state?.inputRef(searchBox) }}
+				</div>
 			</div>
-			<!-- This is a bit of a hack to get the list's ref into the state manager, has to be a better way -->
-			<div style="display:none">
-				{{ state?.listRef(listRef) }}
-			</div>
-			<div style="display:none">
-				{{ state?.inputRef(searchBox) }}
-			</div>
-		</div>
+		}
 	</div>`,
 	standalone: true
 })

@@ -26,6 +26,7 @@ const { state, renderCount } = useHeadlessComponent(
 				:ref="state.inputRef"
 				className="mk-select-input"
 				:value="state.search"
+				:placeholder="state.placeholder"
 				@click="() => state.onInputClick()"
 				@input="(e) => state.setSearch((e.currentTarget as HTMLInputElement)?.value)"
 				@blur="() => state.setFocused(false)"
@@ -36,25 +37,18 @@ const { state, renderCount } = useHeadlessComponent(
 
 			<button
 				v-if="state.selectedItem === null"
-				@click="
-					state.setInputFocus();
-					state.onInputClick();
-				"
+				@click="state.onMenuButtonClick()"
 				className="mk-select-menu-button"
 			/>
 
 			<button
 				v-if="state.selectedItem !== null"
-				@click="
-					state.clear();
-					state.setInputFocus();
-					state.onInputClick();
-				"
+				@click="state.onClearButtonClick()"
 				className="mk-select-clear-button"
 			/>
 		</div>
 		<div style="display: none">{{ renderCount }}</div>
-		<div className="mk-select-dropdown-wrapper">
+		<div v-if="state.searchResults?.length > 0" className="mk-select-dropdown-wrapper">
 			<div
 				:ref="state.listRef"
 				:className="`mk-select-dropdown${!state.open ? ' hidden' : ''}`"

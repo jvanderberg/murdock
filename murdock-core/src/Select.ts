@@ -28,21 +28,19 @@ export type SelectResults<T> = Array<{
 }>;
 
 const useRunLater = ({ useState, useRef }: Hooks, func: () => void, delay: number) => {
-	const [render, setRender] = useState(0);
+	const [runFunctionNow, setRunFunctioNow] = useState(false);
 	const triggered = useRef(false);
-	if (triggered.current) {
-		console.log('triggerRunLater runing func');
-
+	if (runFunctionNow) {
 		func();
+		setRunFunctioNow(false);
 		triggered.current = false;
 	}
 
 	return {
 		trigger: () => {
 			if (!triggered.current) {
-				console.log('triggerRunLater');
 				triggered.current = true;
-				setTimeout(() => setRender(render + 1), delay);
+				setTimeout(() => setRunFunctioNow(true), delay);
 			}
 		}
 	};
@@ -108,6 +106,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 	// This is a bit of a hack because clicking on the menu loses focus momentarily, the menu code
 	// sets focus back to the input, so we trigger this in the next render cycle after the input has
 	// focus again
+	console.log('setSearch selectedItem', selectedItem);
 	const checkFocusLater = useRunLater(
 		{ useEffect, useRef, useState },
 		() => {
@@ -117,11 +116,12 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				setOpen(false);
 				// If we lost focus, with a selected item, make sure to reflect that state in the search box
 				if (selectedItem) {
+					console.log('setSearch in focus', itemToString(selectedItem));
 					setSearch(itemToString(selectedItem));
 				}
 			}
 		},
-		0
+		10
 	);
 
 	useEffect(() => {
@@ -171,6 +171,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 	// search results, if not static results
 	useEffect(() => {
 		if (selectedItem) {
+			console.log('setSearch', itemToString(selectedItem));
 			setSearch(itemToString(selectedItem));
 			setOpen(false);
 			inputRef.current?.focus();
@@ -265,6 +266,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		onClearButtonClick: () => {
 			setSearch('');
 			setSelectedItem(null);
+			console.log('setSearch empty', selectedItem);
 			inputRef.current?.focus();
 			if (props.searchFunction === undefined) {
 				setOpen(true);
