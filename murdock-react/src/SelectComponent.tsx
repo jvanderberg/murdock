@@ -47,11 +47,11 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
                     >
                         {state.searchResults?.map(item => (
                             <div tabIndex={-1}
-                                key={state.itemToString(item.item)}
+                                key={props.itemToString?.(item.item)}
                                 className={`mk-select-dropdown-item${item.focused ? ' focus-item' : ''}`}
                                 onClick={() => item.setSelected(true)}
                             >
-                                {state.itemToString(item.item)}
+                                {props.itemToString?.(item.item)}
                             </div>
                         ))}
                     </div>

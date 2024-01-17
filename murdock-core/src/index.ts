@@ -1,5 +1,5 @@
 export * from './Select';
-
+export * from './types';
 export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export type Hooks = {

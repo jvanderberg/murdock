@@ -55,11 +55,11 @@ const { state, renderCount } = useHeadlessComponent(
 			>
 				<div
 					:className="`mk-select-dropdown-item` + (item.focused ? ' focus-item' : '')"
-					v-bind:key="state.itemToString(item.item as T)"
+					v-bind:key="props.itemToString(item.item as T)"
 					v-for="item in state.searchResults"
 					@click="() => item.setSelected(true)"
 				>
-					{{ state.itemToString(item.item as T) }}
+					{{ props.itemToString(item.item as T) }}
 				</div>
 			</div>
 		</div>

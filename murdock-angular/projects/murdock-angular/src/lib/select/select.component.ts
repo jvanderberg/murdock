@@ -66,6 +66,7 @@ export class SelectComponent<T>
 	@Input() itemToString: (item: T) => string = (item: T) => item as unknown as string;
 	@Input() items?: T[];
 	@Input() search?: string;
+	@Input() placeholder?: string;
 	@Input() selectedItem?: T | null;
 	@Input() debounce?: number;
 	@Input() id?: string;

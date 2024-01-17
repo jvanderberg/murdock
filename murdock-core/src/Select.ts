@@ -1,80 +1,27 @@
-import { Hooks, StateManager } from './index.js';
+import { type SelectProps, type SelectState, type SelectResults } from './types.js';
+import { Hooks } from './index.js';
+import { useRunLater } from './useRunLater.js';
 
-export type SelectProps<T> = {
-	id?: string;
-	items?: T[];
-	placeholder?: string;
-	searchFunction?: (search: string, abortController: AbortController) => Promise<T[]>;
-	debounce?: number;
-	search?: string;
-	setSearch?: (value: string) => void;
-	selectedItem?: T | null;
-	setSelectedItem?: (item: T | null) => void;
-	fetching?: boolean;
-	focused?: boolean;
-	open?: boolean;
-	sort?: (a: T, b: T) => number;
-	itemToString?: (item: T) => string;
-	limit?: number;
-	height?: number;
-	width?: number;
-	overrideClassName?: string;
-};
-export type SelectResults<T> = Array<{
-	item: T;
-	focused: boolean;
-	selected: boolean;
-	setSelected: (selected: boolean) => void;
-}>;
-
-const useRunLater = ({ useState, useRef }: Hooks, func: () => void, delay: number) => {
-	const [runFunctionNow, setRunFunctioNow] = useState(false);
-	const triggered = useRef(false);
-	if (runFunctionNow) {
-		func();
-		setRunFunctioNow(false);
-		triggered.current = false;
-	}
-
-	return {
-		trigger: () => {
-			if (!triggered.current) {
-				triggered.current = true;
-				setTimeout(() => setRunFunctioNow(true), delay);
-			}
-		}
-	};
-};
-
-export type SelectState<T> = {
-	id?: string;
-	items?: T[];
-	placeholder?: string;
-	searchFunction?: (search: string, abortController: AbortController) => Promise<T[]>;
-	debounce: number;
-	search: string;
-	setSearch: (value: string) => void;
-	selectedItem: T | null;
-	setSelectedItem: (item: T) => void;
-	searchResults: SelectResults<T>;
-	fetching: boolean;
-	setFetching: (value: boolean) => void;
-	focused: boolean;
-	setFocused: (value: boolean) => void;
-	open: boolean;
-	setOpen: (value: boolean) => void;
-	onInputClick: () => void;
-	onClearButtonClick: () => void;
-	onMenuButtonClick: () => void;
-	itemToString: (item: T) => string;
-	height?: number;
-	width?: number;
-	rootClassName?: string;
-	listRef?: (ref: HTMLElement) => void;
-	inputRef?: (ref: HTMLInputElement) => void;
-	handleKey: (key: KeyboardEvent) => void;
-};
-
+/**
+ * A SelectComponent function that takes props and returns state, and uses a React-hooks like API to manage the internal state
+ * of a Select component user interface. Rather than rendering UI directly, it returns all the state that's required to populate a UI, in a
+ * framework agnostic way.
+ *
+ * The framework must have a way to handle events, generate HTML element refs, and bind props to a custome component.
+ *
+ * For example it emits an "onClearButtonClick" event handler which can be
+ * wired into clear button. If clicked it appropriately manages the internal state.
+ *
+ * Either a 'searchFunction' or 'items' is required. Items is a static list of items, searchFunction is meant to be an async
+ * function that uses the search string to fetch a list of items from a service.
+ *
+ * 'itemToString' should almost always be provided, as the default is just to use the item itself, which is fine if the results are a
+ * simple array of string, but this is not likely.
+ *
+ * @param {SelectProps<T>} props The props of the component
+ * @param {Hooks} hooks The hooks object passed to the component by the StateManager
+ * @returns {SelectState<T>} The current state of the component, sufficient to render a UI.
+ */
 export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
@@ -105,8 +52,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 	// This is a bit of a hack because clicking on the menu loses focus momentarily, the menu code
 	// sets focus back to the input, so we trigger this in the next render cycle after the input has
-	// focus again
-	console.log('setSearch selectedItem', selectedItem);
+	// focus again. For Angular we need a bit more than the next render cycle, so 10ms seems to work
 	const checkFocusLater = useRunLater(
 		{ useEffect, useRef, useState },
 		() => {
@@ -128,50 +74,52 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		checkFocusLater.trigger();
 	}, [focused]);
 
+	// Calculate the final search results from the fetched results, or the list it items.
 	useEffect(() => {
-		const temp = results.sort(sort).filter(item => {
-			const res = !selectedItem || itemToString(item) !== itemToString(selectedItem);
-
-			return res;
-		});
 		const currentItem = selectedItem ? itemToString(selectedItem) : '';
-		const temp2 = temp.filter(
-			item =>
-				props.searchFunction ||
-				!search ||
-				search === currentItem ||
-				itemToString(item).toLowerCase().includes(search.toLowerCase())
-		);
+		const res = results
+			.sort(sort)
+			// Remove the selected item from the list of results
+			.filter(item => !selectedItem || itemToString(item) !== itemToString(selectedItem))
+			// Filter the list of results based on the search string, if no search function
+			.filter(
+				item =>
+					props.searchFunction ||
+					!search ||
+					search === currentItem ||
+					itemToString(item).toLowerCase().includes(search.toLowerCase())
+			)
+			// Limit the list of results to the limit
+			.slice(0, limit)
+			// Map the results to the SelectResults type
+			.map(item => {
+				return {
+					item,
+					selected: selectedItem && itemToString(item) === itemToString(selectedItem) ? true : false,
+					focused: focusedItem && itemToString(item) === itemToString(focusedItem) ? true : false,
 
-		const temp3 = temp2.slice(0, limit).map(item => {
-			return {
-				item,
-				selected: selectedItem && itemToString(item) === itemToString(selectedItem) ? true : false,
-				focused: focusedItem && itemToString(item) === itemToString(focusedItem) ? true : false,
+					setSelected: (selected: boolean) => {
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						console.log('setSelected', selected, (item as any).name.common);
 
-				setSelected: (selected: boolean) => {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					console.log('setSelected', selected, (item as any).name.common);
+						if (selected) {
+							setSelectedItem(item);
 
-					if (selected) {
-						setSelectedItem(item);
-
-						//inputRef.current?.focus();
-						//clearSearchAfterItemSet.trigger();
-					} else {
-						setSelectedItem(null);
+							//inputRef.current?.focus();
+							//clearSearchAfterItemSet.trigger();
+						} else {
+							setSelectedItem(null);
+						}
 					}
-				}
-			};
-		});
-		setSearchResults(temp3 ?? []);
+				};
+			});
+		setSearchResults(res ?? []);
 	}, [focusedItem, selectedItem, results, search]);
 
 	// If the selected item changes, update the search string to match, close the search box, and clear
 	// search results, if not static results
 	useEffect(() => {
 		if (selectedItem) {
-			console.log('setSearch', itemToString(selectedItem));
 			setSearch(itemToString(selectedItem));
 			setOpen(false);
 			inputRef.current?.focus();
@@ -182,14 +130,16 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 		}
 	}, [selectedItem]);
 
+	// If the search changes, refetch the search results
 	useEffect(() => {
+		if (props.items !== undefined) {
+			// No async fetch, the search results are effectively the list of items.
+			setResults(props.items);
+			return;
+		}
+
 		if (timer.current) {
 			clearTimeout(timer.current);
-		}
-		if (props.items !== undefined) {
-			// Filter the list of items based on the search string matching the itemToString results,
-			// then sort the results, and filter out the currently selected item, if any
-			setResults(props.items);
 		}
 		if (props.searchFunction !== undefined) {
 			timer.current = setTimeout(() => {
@@ -222,7 +172,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				handleSearch();
 			}, props.debounce ?? 100);
 		}
-	}, [search, props.searchFunction, setSearchResults, setFetching, props.debounce]);
+	}, [search]);
 
 	let id: { id?: string } = {};
 	if (props.id !== undefined) {
@@ -238,20 +188,16 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 	}
 
 	return {
-		debounce: props.debounce ?? 100,
 		placeholder: props.placeholder,
 		selectedItem,
 		setSelectedItem,
 		search,
 		setSearch,
 		fetching,
-		setFetching,
 		searchResults,
-		searchFunction: props.searchFunction,
 		focused,
 		setFocused,
 		open,
-		setOpen,
 		listRef: (ref: HTMLElement) => {
 			listRef.current = ref;
 		},
@@ -277,7 +223,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			setSearch('');
 		},
 
-		itemToString,
 		...height,
 		...width,
 		...id,
