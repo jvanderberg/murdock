@@ -67,7 +67,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				}
 			}
 		},
-		10
+		50
 	);
 
 	useEffect(() => {
@@ -166,7 +166,9 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 							}
 						}
 					} catch (e) {
-						setFetching(false);
+						if (!ab?.signal.aborted) {
+							setFetching(false);
+						}
 					}
 				}
 				handleSearch();

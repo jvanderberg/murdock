@@ -35,6 +35,10 @@ const { state, renderCount } = useHeadlessComponent(
 				@keydown="(e) => state.handleKey(e)"
 			/>
 
+			<div v-if="state.fetching" className="mk-select-progress-bar">
+				<div className="mk-select-progress-bar-value"></div>
+			</div>
+
 			<button
 				v-if="state.selectedItem === null"
 				@click="state.onMenuButtonClick()"
@@ -48,8 +52,9 @@ const { state, renderCount } = useHeadlessComponent(
 			/>
 		</div>
 		<div style="display: none">{{ renderCount }}</div>
-		<div v-if="state.searchResults?.length > 0" className="mk-select-dropdown-wrapper">
+		<div className="mk-select-dropdown-wrapper">
 			<div
+				:style="{ opacity: state.searchResults?.length && state.open ? 1 : 0 }"
 				:ref="state.listRef"
 				:className="`mk-select-dropdown${!state.open ? ' hidden' : ''}`"
 			>

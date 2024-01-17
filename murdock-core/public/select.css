@@ -85,8 +85,9 @@
 
 .mk-select-root .mk-select-dropdown-wrapper {
 	position: relative;
-	padding: 0;
 	margin: 0;
+	padding: 0;
+	margin-top: 2px;
 }
 
 .mk-select-root .mk-select-dropdown {
@@ -136,4 +137,38 @@
 .mk-select-root .mk-select-dropdown-item.focus-item {
 	background-color: var(--mk-primary-color, #646cff);
 	color: var(--mk-reverse-text-color, #fff);
+}
+
+.mk-select-root .mk-select-progress-bar {
+	pointer-events: none;
+	height: 100%;
+	background-color: #ffffff00;
+	overflow: hidden;
+	position: absolute;
+	margin-top: -4px;
+	top: 3px;
+	left: 0px;
+	right: 0px;
+	border-radius: var(--mk-corner-radius, 4px);
+}
+
+.mk-select-root .mk-select-progress-bar-value {
+	width: 100%;
+	height: 100%;
+	background-color: var(--mk-primary-color, #646cff);
+	animation: indeterminateAnimation 1.25s infinite linear;
+	transform-origin: 0% 50%;
+	mask-image: linear-gradient(to bottom, transparent 0%, transparent 90%, rgb(0 0 0 / 100%) 95%, rgb(0 0 0 / 100%));
+}
+
+@keyframes indeterminateAnimation {
+	0% {
+		transform: translateX(0) scaleX(0);
+	}
+	40% {
+		transform: translateX(0) scaleX(0.2);
+	}
+	100% {
+		transform: translateX(100%) scaleX(1);
+	}
 }

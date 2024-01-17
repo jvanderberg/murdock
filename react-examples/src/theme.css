@@ -1,6 +1,6 @@
 :root {
 	--mk-padding: 0.5em;
-	--mk-corner-radius: 5px;
+	--mk-corner-radius: 0px;
 	--mk-text-color: #030303;
 	--mk-background-color: #ffffff;
 	--mk-background-color-contrast: #fcfcfc;

@@ -10,10 +10,11 @@ export type Country = {
         common: string;
     };
 };
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const search = async (value: string, abortController: AbortController): Promise<Country[]> => {
     const results = await fetch('https://restcountries.com/v3.1/name/' + value, { signal: abortController.signal });
-
+    await wait(500);
     if (abortController.signal.aborted) {
         throw new Error('Aborted');
     }

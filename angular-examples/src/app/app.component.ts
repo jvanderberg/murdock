@@ -8,6 +8,15 @@ export type Country = {
 		common: string;
 	};
 };
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const searchFunction = async (value: string, abortController: AbortController): Promise<Country[]> => {
+	const results = await fetch('https://restcountries.com/v3.1/name/' + value, { signal: abortController.signal });
+	await wait(500);
+	if (abortController.signal.aborted) {
+		throw new Error('Aborted');
+	}
+	return await results.json();
+};
 @Component({
 	selector: 'app-root',
 	standalone: true,
@@ -18,7 +27,7 @@ export type Country = {
 export class AppComponent {
 	title = 'murdock-angular';
 	@Output() search = '';
-	@Output() items = countries;
+	@Output() searchFunction = searchFunction;
 	@Output() selectedItem: Country | null = null;
 
 	@Output() itemToString = (item: Country): string => {
