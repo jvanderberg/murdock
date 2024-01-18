@@ -5,6 +5,7 @@
 	--mk-background-color: #ffffff;
 	--mk-background-color-contrast: #fcfcfc;
 	--mk-primary-color: #148c9f;
+	--mk-select-font: 20px Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -31,13 +31,13 @@ export type SelectProps<T> = {
 	itemToString?: (item: T) => string;
 	// The maximum number of items to display in the results. Defaults to 10
 	limit?: number;
-	// The height of the select component in pixels
-	height?: number;
 	// The width of the select component in pixels
 	width?: number;
 	// A class to apply to the root element, this will result in zero styling of the UI, you are then responsible for providing your own
 	// stylesheet for the component.
 	overrideClassName?: string;
+	// True if the component is disabled
+	disabled?: boolean;
 };
 
 // The results of a search, including the item, and whether it is focused or selected
@@ -72,7 +72,6 @@ export type SelectState<T> = {
 	onInputClick: () => void;
 	onClearButtonClick: () => void;
 	onMenuButtonClick: () => void;
-	height?: number;
 	width?: number;
 	rootClassName?: string;
 	listRef?: (ref: HTMLElement) => void;

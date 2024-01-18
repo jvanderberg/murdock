@@ -18,6 +18,19 @@
 	font-size: 18px;
 }
 
+.edit-controls {
+	margin-left: 20px;
+}
+.edit-controls label {
+	margin: 2px;
+	padding: 4px;
+	display: inline-block;
+	width: 120px;
+	white-space: nowrap;
+}
+.edit-controls input {
+	width: 50px;
+}
 body {
 	margin: 0;
 	display: flex;

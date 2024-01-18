@@ -15,10 +15,10 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
             }}
             id={state.id}
             className={rootClassName}
-            style={{ height: state.height, width: state.width }}
+            style={{ width: state.width }}
         >
             <div className="mk-select-wrapper">
-                <input
+                <input disabled={props.disabled}
                     placeholder={state.placeholder}
                     aria-expanded={state.open}
                     aria-haspopup="listbox"
@@ -40,10 +40,12 @@ export const SelectComponent = <T,>(props: SelectProps<T>) => {
                     </div>
                 )}
                 {state.selectedItem && (
-                    <button className="mk-select-clear-button" onClick={state.onClearButtonClick}></button>
+                    <div className="mk-select-clear-button-container">
+                        <button disabled={props.disabled} className="mk-select-clear-button" onClick={state.onClearButtonClick}></button>
+                    </div>
                 )}
                 {!state.selectedItem && (
-                    <button className="mk-select-menu-button" onClick={state.onMenuButtonClick}></button>
+                    <button disabled={props.disabled} className="mk-select-menu-button" onClick={state.onMenuButtonClick}></button>
                 )}
             </div>
 

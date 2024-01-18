@@ -180,10 +180,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 	if (props.id !== undefined) {
 		id = { id: props.id };
 	}
-	let height = {};
-	if (props.height !== undefined) {
-		height = { height: props.height };
-	}
 	let width = {};
 	if (props.width !== undefined) {
 		width = { width: props.width };
@@ -225,7 +221,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 			setSearch('');
 		},
 
-		...height,
 		...width,
 		...id,
 		rootClassName: props.overrideClassName || 'mk-select-root',
