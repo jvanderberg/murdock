@@ -10,12 +10,13 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
         "@murdock-ui/murdock-core": "workspace:^",
-        "@murdock-ui/murdock-react": "workspace:^"
+        "@murdock-ui/murdock-react": "workspace:^",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
+        "@faker-js/faker": "^8.3.1",
         "@types/react": "^18.2.43",
         "@types/react-dom": "^18.2.17",
         "@vitejs/plugin-react": "^4.2.1",

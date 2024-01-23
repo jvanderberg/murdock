@@ -5,11 +5,7 @@ import '@murdock-ui/murdock-core/select.css';
 import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 @Component({
 	selector: 'select-component',
-	template: `<div
-		[id]="state.id"
-		[class]="state.rootClassName"
-		[style]="{ width: state.width, height: state.height }"
-	>
+	template: `<div [id]="state.id" [class]="state.rootClassName" [style]="{ width: state.width }">
 		<div class="mk-select-wrapper">
 			<input
 				#searchBox

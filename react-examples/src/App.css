@@ -31,6 +31,10 @@
 .edit-controls input {
 	width: 50px;
 }
+
+#fontInput {
+	width: 200px;
+}
 body {
 	margin: 0;
 	display: flex;
@@ -42,14 +46,3 @@ h1 {
 	font-size: 3.2em;
 	line-height: 1.1;
 }
-
-/* @media (prefers-color-scheme: light) {
-	:root {
-		color: #213547;
-		background-color: #ffffff;
-	}
-
-	button {
-		background-color: #f9f9f9;
-	}
-} */

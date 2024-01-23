@@ -114,7 +114,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				};
 			});
 		setSearchResults(res ?? []);
-	}, [focusedItem, selectedItem, results, search]);
+	}, [focusedItem, selectedItem, results, search, props.limit]);
 
 	// If the selected item changes, update the search string to match, close the search box, and clear
 	// search results, if not static results
@@ -174,7 +174,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				handleSearch();
 			}, props.debounce ?? 100);
 		}
-	}, [search]);
+	}, [search, props.items]);
 
 	let id: { id?: string } = {};
 	if (props.id !== undefined) {
