@@ -68,7 +68,7 @@ function App() {
     const [padding, setPadding] = useState(8);
     const [font, setFont] = useState('20px Arial, sans-serif');
     const [fetchLatency, setFetchLatency] = useState(latency);
-    const [staticDataSize, setStaticDataSize] = useState(10);
+    const [staticDataSize, setStaticDataSize] = useState(300);
     const [dynamicSearch, setDynamicSearch] = useState(true);
 
     useEffect(() => {
@@ -91,10 +91,10 @@ function App() {
     const staticData = useMemo(() => getStaticData(staticDataSize), [staticDataSize]);
     return (
         <>
-            <h1>{selectedItem?.name.common}</h1>
+
             {dynamicSearch && (
                 <>
-                    <h1>Dynamic list</h1>
+                    <p>Selected: {itemToString(selectedItem)}</p>
                     <SelectComponent
                         id="country1"
                         placeholder={placeholder}
@@ -113,7 +113,7 @@ function App() {
             )}
             {!dynamicSearch && (
                 <>
-                    <h1>Static list</h1>
+                    <p>Selected: {selectedAnimal?.name}</p>
                     <SelectComponent
                         id="animals"
                         width={width}
@@ -129,7 +129,7 @@ function App() {
                 </>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', paddingTop: 30, flexDirection: 'row' }}>
                 <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
                     <div>
                         <label title='Max number of items to show in the select component'>
@@ -313,27 +313,7 @@ function App() {
                 </div>
             </div >
 
-            <h1>Static list</h1>
-            <SelectComponent
-                id="country2"
-                width={300}
-                items={countries}
-                overrideClassName="mk-select-root myclass"
-                debounce={50}
-                limit={10}
-                itemToString={itemToString}
-            />
 
-            <h1>Static list</h1>
-            <SelectComponent
-                id="country3"
-                items={countries}
-                overrideClassName="mk-select-root myclass"
-                debounce={50}
-                limit={1000}
-                disabled={true}
-                itemToString={itemToString}
-            />
         </>
     );
 }
