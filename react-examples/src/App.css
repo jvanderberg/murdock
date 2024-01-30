@@ -18,6 +18,20 @@
 	font-size: 18px;
 }
 
+.data-controls {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	align-items: center;
+	height: 50px;
+}
+.data-controls label {
+	margin-right: 30px;
+}
+.data-controls #fetchLatency,
+#animalCount {
+	width: 60px;
+}
 .edit-controls {
 	margin-left: 20px;
 }
@@ -29,7 +43,7 @@
 	white-space: nowrap;
 }
 .edit-controls input {
-	width: 50px;
+	width: 60px;
 }
 
 #fontInput {
@@ -45,4 +59,17 @@ body {
 h1 {
 	font-size: 3.2em;
 	line-height: 1.1;
+}
+
+#placeholderContainer {
+	position: relative;
+	width: 300px;
+	margin-right: -100px;
+}
+
+#placeholderInput {
+	position: absolute;
+	top: 5px;
+	left: 132px;
+	width: 280px;
 }

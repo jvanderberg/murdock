@@ -3,8 +3,7 @@ import React from 'react';
 import './App.css';
 import './theme.css';
 import { SelectComponent } from '@murdock-ui/murdock-react/select-component';
-import { countries } from './countries';
-import { faker } from '@faker-js/faker';
+import { faker, pl } from '@faker-js/faker';
 export type Country = {
     name: {
         common: string;
@@ -23,7 +22,6 @@ const search = async (value: string, abortController: AbortController): Promise<
     if (abortController.signal.aborted) {
         throw new Error('Aborted');
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return await results.json();
 };
 const itemToString = (item: Country | null): string => {
@@ -54,7 +52,9 @@ function App() {
     const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
 
     const [searchValue, setSearchValue] = useState('');
-    const [placeholder, setPlaceholder] = useState('Search for a country');
+    const [placeholderCountries, setPlaceholderCountries] = useState('Search for a country');
+    const [placeholderAnimals, setPlaceholderAnimals] = useState('Search for an animal');
+
     const [limit, setLimit] = useState(10);
     const [debounce, setDebounce] = useState(50);
     const [disabled, setDisabled] = useState(false);
@@ -70,6 +70,7 @@ function App() {
     const [fetchLatency, setFetchLatency] = useState(latency);
     const [staticDataSize, setStaticDataSize] = useState(300);
     const [dynamicSearch, setDynamicSearch] = useState(true);
+    const [animationSpeed, setAnimationSpeed] = useState(300);
 
     useEffect(() => {
         document.body.style.setProperty('--mk-select-max-menu-height', popupHeight + 'px');
@@ -81,8 +82,9 @@ function App() {
         document.body.style.setProperty('--mk-select-height', height + 'px');
         document.body.style.setProperty('--mk-select-width', width + 'px');
         document.body.style.setProperty('--mk-select-font', font);
+        document.body.style.setProperty('--mk-animation-speed', animationSpeed + 'ms');
 
-    }, [popupHeight, cornerRadius, textColor, primaryColor, backgroundColor, padding, height, width, font]);
+    }, [popupHeight, cornerRadius, textColor, primaryColor, backgroundColor, padding, height, width, font, animationSpeed]);
 
     useEffect(() => {
         latency = fetchLatency
@@ -94,10 +96,11 @@ function App() {
 
             {dynamicSearch && (
                 <>
-                    <p>Selected: {itemToString(selectedItem)}</p>
+                    <h3>Dynamic Country Search</h3>
+                    <p>Selected &nbsp;&nbsp;<b>{itemToString(selectedItem)}</b></p>
                     <SelectComponent
                         id="country1"
-                        placeholder={placeholder}
+                        placeholder={placeholderCountries}
                         width={width}
                         selectedItem={selectedItem}
                         setSelectedItem={setSelectedItem}
@@ -113,12 +116,14 @@ function App() {
             )}
             {!dynamicSearch && (
                 <>
-                    <p>Selected: {selectedAnimal?.name}</p>
+                    <h3>Static Animal List</h3>
+                    <p>Selected &nbsp;&nbsp;<b>{selectedAnimal?.name}</b></p>
                     <SelectComponent
                         id="animals"
                         width={width}
                         items={staticData}
-                        placeholder='Search for an animal'
+
+                        placeholder={placeholderAnimals}
                         selectedItem={selectedAnimal}
                         setSelectedItem={setSelectedAnimal}
                         debounce={debounce}
@@ -128,42 +133,55 @@ function App() {
                         itemToString={(animal: Animal) => animal.name} />
                 </>
             )}
+            <div className='data-controls' >
 
-            <div style={{ display: 'flex', paddingTop: 30, flexDirection: 'row' }}>
+                <input type='radio' id='animal' name="Date Type" checked={!dynamicSearch} onChange={(e) => setDynamicSearch(!e.currentTarget.checked)} />
+                <label htmlFor='animal'>Animal</label>
+                <input type='radio' id='country' name="Date Type" checked={dynamicSearch} onChange={(e) => setDynamicSearch(e.currentTarget.checked)} />
+                <label htmlFor="country">Country</label>
+
+                {!dynamicSearch ? (
+                    <div>
+                        <label title='Number of animals in static list'>
+                            Number of animals
+                        </label>
+                        <input
+                            type="number"
+                            id="animalCount"
+                            title='Number of animals in static list'
+                            value={staticDataSize}
+                            step="25"
+                            onChange={(e) => setStaticDataSize(parseInt(e.target.value, 10))}
+                        />
+                    </div>) : (
+                    <>
+
+                        <div>
+                            <label title='Added latency in ms for the dynamic country search (to simulate network latency)'>
+                                Added Latency
+                            </label>
+                            <input
+                                id='fetchLatency'
+                                type="number"
+                                title='Added latency in ms for the dynamic country search (to simulate network latency)'
+                                value={fetchLatency}
+                                step={100}
+                                onChange={(e) => setFetchLatency(parseInt(e.target.value, 10))}
+                            />
+                        </div>
+                    </>
+
+
+                )}
+
+
+
+            </div >
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+
+
                 <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div>
-                        <label title='Max number of items to show in the select component'>
-                            Limit
-                        </label>
-                        <input
-                            type="number"
-                            title='Max number of items to show in the select component'
-                            value={limit}
-                            onChange={(e) => setLimit(parseInt(e.target.value, 10))}
-                        />
-                    </div>
-                    <div>
-                        <label title='Debounce. The amount of to pause after typing before doing a search or filter.'>
-                            Debounce
-                        </label>
-                        <input
-                            type="number"
-                            title='Debounce. The amount of to pause after typing before doing a search or filter.'
-                            value={debounce}
-                            onChange={(e) => setDebounce(parseInt(e.target.value, 10))}
-                        />
-                    </div>
-                    <div>
-                        <label title='Whether or not the seclect component is disabled'>
-                            Disabled
-                        </label>
-                        <input
-                            title='Whether or not the seclect component is disabled'
-                            type="checkbox"
-                            checked={disabled}
-                            onChange={(e) => setDisabled(e.target.checked)}
-                        />
-                    </div>
                     <div>
                         <label title='Width of the select component'>
                             Width
@@ -172,6 +190,7 @@ function App() {
                             type="number"
                             title='Width of the select component'
                             value={width}
+                            step={25}
                             onChange={(e) => setWidth(parseInt(e.target.value, 10))}
                         />
                     </div>
@@ -183,11 +202,10 @@ function App() {
                             type="number"
                             title='Height of the select component'
                             value={height}
+                            step={5}
                             onChange={(e) => setHeight(parseInt(e.target.value, 10))}
                         />
                     </div>
-                </div>
-                <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
                     <div>
                         <label title='Max height of the menu popup'>
                             Menu Height
@@ -195,6 +213,7 @@ function App() {
                         <input
                             type="number"
                             value={popupHeight}
+                            step={50}
                             title='Max height of the menu popup'
                             onChange={(e) => {
                                 setPopupHeight(parseInt(e.target.value, 10))
@@ -215,6 +234,35 @@ function App() {
                             }}
                         />
                     </div>
+                    <div id="placeholderContainer">
+                        {dynamicSearch ? (<div>
+                            <label title='Placeholder for the select component'>
+                                Placeholder &nbsp;&nbsp;
+                            </label>
+                            <input
+                                type="text"
+                                id='placeholderInput'
+                                title='Font for the select component'
+                                value={placeholderCountries}
+                                onChange={(e) => setPlaceholderCountries(e.target.value)}
+                            />
+                        </div>) : (<div>
+                            <label title='Placeholder for the select component'>
+                                Placeholder &nbsp;&nbsp;
+                            </label>
+                            <input
+                                type="text"
+                                id='placeholderInput'
+                                title='Placeholder for the select component'
+                                value={placeholderAnimals}
+                                onChange={(e) => setPlaceholderAnimals(e.target.value)}
+                            />
+                        </div>)}
+                    </div>
+
+
+                </div>
+                <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
                     <div>
                         <label title='Text color for the select component'>
                             Text Color
@@ -248,32 +296,6 @@ function App() {
                             onChange={(e) => setBackgroundColor(e.target.value)}
                         />
                     </div>
-
-
-                </div>
-                <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div>
-                        <label title='Dyynamic search for countries or static search for animals'>
-                            Dynamic Search
-                        </label>
-                        <input
-                            title='Dyynamic search for countries or static search for animals'
-                            type="checkbox"
-                            checked={dynamicSearch}
-                            onChange={(e) => setDynamicSearch(e.target.checked)}
-                        />
-                    </div>
-                    <div>
-                        <label title='Number of animals in static list'>
-                            Animals
-                        </label>
-                        <input
-                            type="number"
-                            title='Number of animals in static list'
-                            value={staticDataSize}
-                            onChange={(e) => setStaticDataSize(parseInt(e.target.value, 10))}
-                        />
-                    </div>
                     <div>
                         <label title='Padding for murdock UI - used as a hint for the tightness of the layout. Higher values are more spacious'
                         >
@@ -284,6 +306,59 @@ function App() {
                             title='Padding for murdock UI - used as a hint for the tightness of the layout. Higher values are more spacious'
                             value={padding}
                             onChange={(e) => setPadding(parseInt(e.target.value, 10))}
+                        />
+                    </div>
+
+
+
+
+                </div>
+                <div className='edit-controls' style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div>
+                        <label title='Whether or not the seclect component is disabled'>
+                            Disabled
+                        </label>
+                        <input
+                            title='Whether or not the seclect component is disabled'
+                            type="checkbox"
+                            checked={disabled}
+                            onChange={(e) => setDisabled(e.target.checked)}
+                        />
+                    </div>
+                    <div>
+                        <label title='Debounce. The amount of time in ms to pause after typing before doing a search or filter.'>
+                            Debounce
+                        </label>
+                        <input
+                            type="number"
+                            title='Debounce. The amount of time in ms to pause after typing before doing a search or filter.'
+                            value={debounce}
+                            onChange={(e) => setDebounce(parseInt(e.target.value, 10))}
+                        />
+                    </div>
+
+                    <div>
+                        <label title='Max number of items to show in the select component'>
+                            Limit
+                        </label>
+                        <input
+                            type="number"
+                            title='Max number of items to show in the select component'
+                            value={limit}
+                            onChange={(e) => setLimit(parseInt(e.target.value, 10))}
+                        />
+                    </div>
+
+                    <div>
+                        <label title='Speed in ms of murdock animations, lower is faster'>
+                            Anim. Speed
+                        </label>
+                        <input
+                            type="number"
+                            title='Speed in ms of murdock animations, lower is faster'
+                            value={animationSpeed}
+                            step={50}
+                            onChange={(e) => setAnimationSpeed(parseInt(e.target.value, 10))}
                         />
                     </div>
                     <div>
@@ -298,17 +373,7 @@ function App() {
                             onChange={(e) => setFont(e.target.value)}
                         />
                     </div>
-                    <div>
-                        <label title='Added latency in ms for the dynamic country search (to simulate network latency)'>
-                            Latency
-                        </label>
-                        <input
-                            type="number"
-                            title='Added latency in ms for the dynamic country search (to simulate network latency)'
-                            value={fetchLatency}
-                            onChange={(e) => setFetchLatency(parseInt(e.target.value, 10))}
-                        />
-                    </div>
+
 
                 </div>
             </div >
