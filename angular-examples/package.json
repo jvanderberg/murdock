@@ -18,10 +18,11 @@
         "@angular/platform-browser": "^17.0.0",
         "@angular/platform-browser-dynamic": "^17.0.0",
         "@angular/router": "^17.0.0",
+        "@faker-js/faker": "^8.3.1",
+        "@murdock-ui/murdock-angular": "workspace:^",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
-        "zone.js": "~0.14.2",
-        "@murdock-ui/murdock-angular": "workspace:^"
+        "zone.js": "~0.14.2"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^17.0.9",

@@ -7,16 +7,16 @@ import { useRunLater } from './useRunLater.js';
  * of a Select component user interface. Rather than rendering UI directly, it returns all the state that's required to populate a UI, in a
  * framework agnostic way.
  *
- * The framework must have a way to handle events, generate HTML element refs, and bind props to a custome component.
+ * The framework must have a way to handle events, generate HTML element refs, and bind props to a custom component.
  *
  * For example it emits an "onClearButtonClick" event handler which can be
- * wired into clear button. If clicked it appropriately manages the internal state.
+ * wired into clear button. If clicked, it appropriately manages the internal state.
  *
  * Either a 'searchFunction' or 'items' is required. Items is a static list of items, searchFunction is meant to be an async
  * function that uses the search string to fetch a list of items from a service.
  *
  * 'itemToString' should almost always be provided, as the default is just to use the item itself, which is fine if the results are a
- * simple array of string, but this is not likely.
+ * simple array of strings, but this is not likely.
  *
  * @param {SelectProps<T>} props The props of the component
  * @param {Hooks} hooks The hooks object passed to the component by the StateManager
@@ -62,7 +62,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 				setOpen(false);
 				// If we lost focus, with a selected item, make sure to reflect that state in the search box
 				if (selectedItem) {
-					console.log('setSearch in focus', itemToString(selectedItem));
 					setSearch(itemToString(selectedItem));
 				}
 			}
@@ -99,17 +98,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 					focused: focusedItem && itemToString(item) === itemToString(focusedItem) ? true : false,
 
 					setSelected: (selected: boolean) => {
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						console.log('setSelected', selected, (item as any).name.common);
-
-						if (selected) {
-							setSelectedItem(item);
-
-							//inputRef.current?.focus();
-							//clearSearchAfterItemSet.trigger();
-						} else {
-							setSelectedItem(null);
-						}
+						setSelectedItem(selected ? item : null);
 					}
 				};
 			});
@@ -273,12 +262,6 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 					if (item !== null) {
 						setSelectedItem(item);
 						setFocusedItem(null);
-						// setSearch(itemToString(item));
-
-						// setTimeout(() => {
-						// 	setOpen(false);
-						// }, 50);
-						//setSearchResults([]);
 					}
 				}
 				return;

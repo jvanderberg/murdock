@@ -65,6 +65,9 @@ export class SelectComponent<T>
 {
 	@Input() searchFunction?: (search: string, abortController: AbortController) => Promise<T[]>;
 	@Input() itemToString: (item: T) => string = (item: T) => item as unknown as string;
+	@Input() sort?: (a: T, b: T) => number;
+	@Input() disabled?: boolean | undefined;
+	@Input() width?: number;
 	@Input() items?: T[];
 	@Input() search?: string;
 	@Input() placeholder?: string;

@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 import './theme.css';
 import { SelectComponent } from '@murdock-ui/murdock-react/select-component';
-import { faker, pl } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 export type Country = {
     name: {
         common: string;
