@@ -16,11 +16,7 @@ const { state, renderCount } = useHeadlessComponent(
 </script>
 
 <template>
-	<div
-		:id="state.id"
-		:className="state.rootClassName"
-		:style="{ width: state.width + 'px', height: state.height + 'px' }"
-	>
+	<div :id="state.id" :className="state.rootClassName" :style="{ width: state.width + 'px' }">
 		<div class="mk-select-wrapper">
 			<input
 				:ref="state.inputRef"
@@ -31,8 +27,9 @@ const { state, renderCount } = useHeadlessComponent(
 				@input="(e) => state.setSearch((e.currentTarget as HTMLInputElement)?.value)"
 				@blur="() => state.setFocused(false)"
 				@focus="() => state.setFocused(true)"
-				:style="{ width: state.width + 'px', height: state.height + 'px' }"
+				:style="{ width: state.width + 'px' }"
 				@keydown="(e) => state.handleKey(e)"
+				:disabled="disabled"
 			/>
 
 			<div v-if="state.fetching" className="mk-select-progress-bar">
@@ -43,12 +40,14 @@ const { state, renderCount } = useHeadlessComponent(
 				v-if="state.selectedItem === null"
 				@click="state.onMenuButtonClick()"
 				className="mk-select-menu-button"
+				:disabled="disabled"
 			/>
 
 			<button
 				v-if="state.selectedItem !== null"
 				@click="state.onClearButtonClick()"
 				className="mk-select-clear-button"
+				:disabled="disabled"
 			/>
 		</div>
 		<div style="display: none">{{ renderCount }}</div>

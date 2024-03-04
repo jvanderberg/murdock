@@ -10,6 +10,7 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 			<input
 				#searchBox
 				class="mk-select-input"
+				[disabled]="disabled"
 				[value]="state.search"
 				[placeholder]="state.placeholder || ''"
 				(blur)="state.setFocused(false)"
@@ -25,9 +26,17 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 				</div>
 			}
 			@if (state.selectedItem === null) {
-				<button (click)="state.onMenuButtonClick()" class="mk-select-menu-button"></button>
+				<button
+					[disabled]="disabled"
+					(click)="state.onMenuButtonClick()"
+					class="mk-select-menu-button"
+				></button>
 			} @else {
-				<button (click)="state.onClearButtonClick()" class="mk-select-clear-button"></button>
+				<button
+					[disabled]="disabled"
+					(click)="state.onClearButtonClick()"
+					class="mk-select-clear-button"
+				></button>
 			}
 		</div>
 

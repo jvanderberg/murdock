@@ -10,6 +10,16 @@
 	--mk-select-max-menu-height: 200px;
 }
 
+:root {
+	--mk-padding: 0.5em;
+	--mk-corner-radius: 0px;
+	--mk-text-color: #030303;
+	--mk-background-color: #ffffff;
+	--mk-background-color-contrast: #fcfcfc;
+	--mk-primary-color: #148c9f;
+	--mk-select-font: 20px Arial, sans-serif;
+}
+
 @media (prefers-color-scheme: dark) {
 	:host {
 		--mk-text-color: #fff;
