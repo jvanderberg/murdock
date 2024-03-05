@@ -9,3 +9,5 @@ vitest.*
 .editorconfig
 angular.json
 .gitignore
+.vscode
+.angular
