@@ -15,6 +15,15 @@ export const getHooks = (sm: StateManager): Hooks => {
 		useEffect: sm.useEffect.bind(sm)
 	};
 };
+/**
+ * StateManager is a utility class that stores the state of a Murdock component. Exactly one StateManager should be created
+ * for each instance of a Murdock component. The constructor takes a callback that is called whenever the state changes. This
+ * may or may not be needed by the framework.
+ *
+ * The render function must be called every time the framework renders the component, passing an instance of the headless component being wrapped.
+ * This will call the headless component function, passing in the hooks object that allows the 'stateless' functional component to access persistent
+ * state accross renders.
+ */
 export class StateManager {
 	private onStateChanged: () => void;
 	private storage: { value: unknown; setter: (val: unknown) => void }[] = [];
@@ -148,6 +157,10 @@ export class StateManager {
 	};
 }
 
+/**
+ * A headless component that maps props P to state S. This function must be integrated into the render life cycle in a particular
+ * framework, taking the props using the framework's props mechanism, and returning the state to be used to render the UI.
+ */
 export type HeadlessComponent<P extends Record<string, unknown>, S extends Record<string, unknown>> = (
 	props: P,
 	hooks: Hooks

@@ -10,7 +10,7 @@ import { useRunLater } from './useRunLater.js';
  * The framework must have a way to handle events, generate HTML element refs, and bind props to a custom component.
  *
  * For example it emits an "onClearButtonClick" event handler which can be
- * wired into clear button. If clicked, it appropriately manages the internal state.
+ * wired into a clear button. If clicked, it appropriately manages the internal state.
  *
  * Either a 'searchFunction' or 'items' is required. Items is a static list of items, searchFunction is meant to be an async
  * function that uses the search string to fetch a list of items from a service.
@@ -52,7 +52,7 @@ export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, u
 
 	// This is a bit of a hack because clicking on the menu loses focus momentarily, the menu code
 	// sets focus back to the input, so we trigger this in the next render cycle after the input has
-	// focus again. For Angular we need a bit more than the next render cycle, so 10ms seems to work
+	// focus again. For Angular we need a bit more than the next render cycle, so 50ms seems to work
 	const checkFocusLater = useRunLater(
 		{ useEffect, useRef, useState },
 		() => {

@@ -2,7 +2,7 @@
     "private": false,
     "type": "module",
     "name": "@murdock-ui/murdock-core",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "files": [
         "dist"
     ],
