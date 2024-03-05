@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-react",
     "private": false,
-    "version": "0.5.2",
+    "version": "0.5.3",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -54,5 +54,20 @@
         "typescript": "^5.2.2",
         "vite": "^5.0.8",
         "vite-plugin-dts": "^3.7.0"
-    }
+    },
+    "description": "Murdock React - React components for Murdock UI.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jvanderberg/murdock.git"
+    },
+    "keywords": [
+        "Headless",
+        "UI"
+    ],
+    "author": "Josh Vanderberg",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jvanderberg/murdock/issues"
+    },
+    "homepage": "https://github.com/jvanderberg/murdock#readme"
 }
