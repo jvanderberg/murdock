@@ -20,7 +20,7 @@
         "vue-examples": "npm -w vue-examples run dev",
         "react-examples": "npm -w react-examples run dev",
         "angular-examples": "rm -rf angular-examples/.angular/cache && npm -w angular-examples run dev",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
