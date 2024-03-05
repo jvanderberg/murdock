@@ -21,7 +21,6 @@
         "react-examples": "npm -w react-examples run dev",
         "angular-examples": "rm -rf angular-examples/.angular/cache && npm -w angular-examples run dev",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon --verbose --exec 'npm -w murdock-core run build && npm -w murdock-react run dev '"
     },
     "author": "",
     "license": "ISC",
