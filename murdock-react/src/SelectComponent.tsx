@@ -1,8 +1,8 @@
-import { SelectComponent as MKSelect, SelectProps } from '@murdock-ui/murdock-core';
+import { HeadlessSelect as MKSelect, SelectProps } from '@murdock-ui/murdock-core';
 import { useHeadlessComponent } from './index.ts';
 import '@murdock-ui/murdock-core/select.css';
 
-export const SelectComponent = <T,>(props: SelectProps<T>) => {
+export const Select = <T,>(props: SelectProps<T>) => {
     const state = useHeadlessComponent(MKSelect<T>, props);
     const rootClassName = state.rootClassName ?? '';
     return (

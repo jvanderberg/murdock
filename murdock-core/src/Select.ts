@@ -22,7 +22,7 @@ import { useRunLater } from './useRunLater.js';
  * @param {Hooks} hooks The hooks object passed to the component by the StateManager
  * @returns {SelectState<T>} The current state of the component, sufficient to render a UI.
  */
-export function SelectComponent<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
+export function HeadlessSelect<T>(props: SelectProps<T>, { useEffect, useRef, useState }: Hooks): SelectState<T> {
 	const abortController = useRef(new AbortController());
 	const timer = useRef<ReturnType<typeof setTimeout>>();
 	const listRef = useRef<HTMLElement>();

@@ -357,7 +357,7 @@ importers:
         version: link:../murdock-core
       '@murdock-ui/murdock-react':
         specifier: 0.5.3
-        version: link:../murdock-react
+        version: 0.5.3(@murdock-ui/murdock-core@murdock-core)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3058,6 +3058,16 @@ packages:
 
   /@microsoft/tsdoc@0.14.2:
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
+
+  /@murdock-ui/murdock-react@0.5.3(@murdock-ui/murdock-core@murdock-core):
+    resolution: {integrity: sha512-VYRFdZ6w2v74ROGoTqHax0U5C/EsX2d5hczf1gJoQaCHm7YAhQlm9SKeThWemTcWgC9OXYapwKm2EhjPcpj7NA==}
+    peerDependencies:
+      '@murdock-ui/murdock-core': workspace:^
+    dependencies:
+      '@murdock-ui/murdock-core': link:murdock-core
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@ngtools/webpack@17.0.9(@angular/compiler-cli@17.0.8)(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-ilbzwW30NaccrhYbdY3jy/ZpbC0l7W6+L2Cd3dzHFQ1gZGckibDdMzjibW/vyq/vRf0xr25+oBVIqUn8kZ606g==}

@@ -1,6 +1,6 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectProps, SelectState, SelectComponent as MKSelect } from '@murdock-ui/murdock-core';
+import { SelectProps, SelectState, HeadlessSelect as MKSelect } from '@murdock-ui/murdock-core';
 import '@murdock-ui/murdock-core/select.css';
 import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 @Component({
