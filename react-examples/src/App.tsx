@@ -111,7 +111,6 @@ function App() {
                         setSearch={setSearchValue}
                         searchFunction={search}
                         itemToString={itemToString}
-                        overrideClassName='mk-select-root-country'
                     />
                 </>
             )}

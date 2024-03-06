@@ -353,10 +353,10 @@ importers:
   react-examples:
     dependencies:
       '@murdock-ui/murdock-core':
-        specifier: workspace:^
+        specifier: 0.5.2
         version: link:../murdock-core
       '@murdock-ui/murdock-react':
-        specifier: workspace:^
+        specifier: 0.5.3
         version: link:../murdock-react
       react:
         specifier: ^18.2.0
