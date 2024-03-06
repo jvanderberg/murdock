@@ -237,7 +237,7 @@ importers:
   murdock-react:
     dependencies:
       '@murdock-ui/murdock-core':
-        specifier: workspace:^
+        specifier: ^0.5.2
         version: link:../murdock-core
       react:
         specifier: ^18.2.0
