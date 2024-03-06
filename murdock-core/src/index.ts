@@ -1,6 +1,5 @@
-export * from './Select';
+export * from './HeadlessMurdockSelect';
 export * from './types';
-export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export type Hooks = {
 	useState: StateManager['useState'];

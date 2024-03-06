@@ -56,8 +56,6 @@ export type SelectResults<T> = Array<{
 export type SelectState<T> = {
 	// The HTML id of the select component
 	id?: string;
-	// A list of items to display in the select
-	items?: T[];
 	// A placeholder to display in the input box
 	placeholder?: string;
 	search: string;
@@ -77,4 +75,5 @@ export type SelectState<T> = {
 	listRef?: (ref: HTMLElement) => void;
 	inputRef?: (ref: HTMLInputElement) => void;
 	handleKey: (key: KeyboardEvent) => void;
+	itemToString: (item: T) => string;
 };
