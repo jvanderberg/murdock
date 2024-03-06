@@ -237,7 +237,7 @@ importers:
   murdock-react:
     dependencies:
       '@murdock-ui/murdock-core':
-        specifier: ^0.5.2
+        specifier: ^0.5.5
         version: link:../murdock-core
       react:
         specifier: ^18.2.0
@@ -354,10 +354,10 @@ importers:
     dependencies:
       '@murdock-ui/murdock-core':
         specifier: 0.5.2
-        version: link:../murdock-core
+        version: 0.5.2
       '@murdock-ui/murdock-react':
         specifier: 0.5.3
-        version: 0.5.3(@murdock-ui/murdock-core@murdock-core)
+        version: 0.5.3(@murdock-ui/murdock-core@0.5.2)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3059,12 +3059,20 @@ packages:
   /@microsoft/tsdoc@0.14.2:
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
 
-  /@murdock-ui/murdock-react@0.5.3(@murdock-ui/murdock-core@murdock-core):
+  /@murdock-ui/murdock-core@0.5.2:
+    resolution: {integrity: sha512-ID0VyjqGs3Wh49ZRodv4Gc5m9shboRwXSM7cCIDG7x8baZ8TwPllYl+6uwqRWWZOVVRGVwfCMCMme4TFXZHDgA==}
+    dependencies:
+      classnames: 2.3.2
+      preact: 10.19.3
+      preact-custom-element: 4.3.0(preact@10.19.3)
+    dev: false
+
+  /@murdock-ui/murdock-react@0.5.3(@murdock-ui/murdock-core@0.5.2):
     resolution: {integrity: sha512-VYRFdZ6w2v74ROGoTqHax0U5C/EsX2d5hczf1gJoQaCHm7YAhQlm9SKeThWemTcWgC9OXYapwKm2EhjPcpj7NA==}
     peerDependencies:
       '@murdock-ui/murdock-core': workspace:^
     dependencies:
-      '@murdock-ui/murdock-core': link:murdock-core
+      '@murdock-ui/murdock-core': 0.5.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false

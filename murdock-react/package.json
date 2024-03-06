@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-react",
     "private": false,
-    "version": "0.5.4",
+    "version": "0.5.5",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -36,7 +36,7 @@
         }
     },
     "peerDependencies": {
-        "@murdock-ui/murdock-core": "^0.5.2"
+        "@murdock-ui/murdock-core": "^0.5.5"
     },
     "dependencies": {
         "react": "^18.2.0",
