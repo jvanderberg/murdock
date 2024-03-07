@@ -1,8 +1,8 @@
-import { HeadlessSelect as MKSelect, SelectProps } from '@murdock-ui/murdock-core';
+import { HeadlessMurdockSelect as MKSelect, SelectProps } from '@murdock-ui/murdock-core';
 import { useHeadlessComponent } from './index.ts';
 import '@murdock-ui/murdock-core/select.css';
 
-export const Select = <T,>(props: SelectProps<T>) => {
+export const MurdockSelect = <T,>(props: SelectProps<T>) => {
     const state = useHeadlessComponent(MKSelect<T>, props);
     const rootClassName = state.rootClassName ?? '';
     return (
@@ -64,7 +64,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
                             className={`mk-select-dropdown-item${item.focused ? ' focus-item' : ''}`}
                             onClick={() => item.setSelected(true)}
                         >
-                            {props.itemToString?.(item.item)}
+                            {state.itemToString?.(item.item)}
                         </div>
                     ))}
                 </div>

@@ -10,8 +10,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@murdock-ui/murdock-core": "0.5.2",
-        "@murdock-ui/murdock-react": "0.5.3",
+        "@murdock-ui/murdock-core": "0.5.7",
+        "@murdock-ui/murdock-react": "0.5.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },

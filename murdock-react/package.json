@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-react",
     "private": false,
-    "version": "0.5.5",
+    "version": "0.5.7",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -20,8 +20,8 @@
             "require": null,
             "types": "./dist/murdock-react.d.ts"
         },
-        "./select-component": {
-            "import": "./dist/select-component.js",
+        "./murdock-select": {
+            "import": "./dist/murdock-select.js",
             "require": null,
             "types": "./dist/select-component.d.ts"
         }
@@ -36,7 +36,7 @@
         }
     },
     "peerDependencies": {
-        "@murdock-ui/murdock-core": "^0.5.5"
+        "@murdock-ui/murdock-core": "^0.5.7"
     },
     "dependencies": {
         "react": "^18.2.0",

@@ -1,10 +1,10 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectProps, SelectState, HeadlessSelect as MKSelect } from '@murdock-ui/murdock-core';
+import { SelectProps, SelectState, HeadlessMurdockSelect as MKSelect } from '@murdock-ui/murdock-core';
 import '@murdock-ui/murdock-core/select.css';
 import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 @Component({
-	selector: 'select-component',
+	selector: 'murdock-select',
 	template: `<div [id]="state.id" [class]="state.rootClassName" [style]="{ width: state.width }">
 		<div class="mk-select-wrapper">
 			<input
@@ -68,7 +68,7 @@ import { HeadlessAngularComponent, HeadlessClass } from '../base.component';
 	</div>`,
 	standalone: true
 })
-export class SelectComponent<T>
+export class MurdockSelect<T>
 	extends HeadlessAngularComponent<SelectProps<T>, SelectState<T>>
 	implements HeadlessClass<SelectProps<T>, SelectState<T>>
 {

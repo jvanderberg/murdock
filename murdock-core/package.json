@@ -2,7 +2,7 @@
     "private": false,
     "type": "module",
     "name": "@murdock-ui/murdock-core",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "files": [
         "dist"
     ],
@@ -27,13 +27,9 @@
         "lint": "eslint --max-warnings 0  \"src/**/*.{js,ts,tsx}\""
     },
     "dependencies": {
-        "classnames": "^2.3.2",
-        "preact": "^10.13.1",
-        "preact-custom-element": "^4.3.0"
+        "classnames": "^2.3.2"
     },
     "devDependencies": {
-        "@preact/preset-vite": "^2.5.0",
-        "@types/preact-custom-element": "^4.0.4",
         "typescript": "^5.3.3",
         "vite": "^4.3.2"
     },

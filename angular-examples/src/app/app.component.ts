@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SelectComponent } from '@murdock-ui/murdock-angular';
+import { MurdockSelect } from '@murdock-ui/murdock-angular';
 import { faker } from '@faker-js/faker';
 
 export type Country = {
@@ -45,7 +45,7 @@ const fakerFuncs = [
 @Component({
 	selector: 'app-root',
 	standalone: true,
-	imports: [CommonModule, RouterOutlet, SelectComponent],
+	imports: [CommonModule, RouterOutlet, MurdockSelect],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.css'
 })
