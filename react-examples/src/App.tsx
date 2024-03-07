@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import React from 'react';
 import './App.css';
 import './theme.css';
-import { SelectComponent } from '@murdock-ui/murdock-react/select-component';
+import { MurdockSelect } from '@murdock-ui/murdock-react/murdock-select';
 import { faker } from '@faker-js/faker';
 export type Country = {
     name: {
@@ -98,7 +98,7 @@ function App() {
                 <>
                     <h3>Dynamic Country Search</h3>
                     <p>Selected &nbsp;&nbsp;<b>{itemToString(selectedItem)}</b></p>
-                    <SelectComponent
+                    <MurdockSelect
                         id="country1"
                         placeholder={placeholderCountries}
                         width={width}
@@ -118,7 +118,7 @@ function App() {
                 <>
                     <h3>Static Animal List</h3>
                     <p>Selected &nbsp;&nbsp;<b>{selectedAnimal?.name}</b></p>
-                    <SelectComponent
+                    <MurdockSelect
                         id="animals"
                         width={width}
                         items={staticData}

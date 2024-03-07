@@ -58,5 +58,8 @@
             "@typescript-eslint"
         ],
         "rules": {}
+    },
+    "dependencies": {
+        "surge": "^0.23.1"
     }
 }

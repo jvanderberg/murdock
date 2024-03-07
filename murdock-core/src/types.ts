@@ -19,13 +19,6 @@ export type SelectProps<T> = {
 	selectedItem?: T | null;
 	// A function to set the selected item, used for double binding
 	setSelectedItem?: (item: T | null) => void;
-	// True if currently fetching search results
-	fetching?: boolean;
-	// True if the component is focused
-	focused?: boolean;
-	// True if the search results are open
-	open?: boolean;
-	// A function that sorts search results, by default they will be sorted by the itemToString function
 	sort?: (a: T, b: T) => number;
 	// A function that takes an item in the search results and returns a string to display
 	itemToString?: (item: T) => string;
