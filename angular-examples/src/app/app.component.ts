@@ -51,14 +51,16 @@ const fakerFuncs = [
 })
 export class AppComponent implements OnInit {
 	title = 'murdock-angular';
-	@Output() search = '';
+
 	latency = 300;
 	searchFunction = search(this.latency);
 	@Output() selectedItem: Country | null = null;
 	@Output() selectedAnimal: Animal | null = null;
-	searchValue: string = '';
+	@Output() searchValueAnimal: string = '';
+	@Output() searchValueCountry: string = '';
+
 	placeholderCountries: string = 'Search for a country';
-	placeholderAnimals = 'Search for an animal';
+	placeholderAnimals: string = 'Search for an animal';
 
 	limit = 10;
 	debounce = 50;

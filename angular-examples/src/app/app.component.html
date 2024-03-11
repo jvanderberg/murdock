@@ -5,18 +5,18 @@
     <div>
         <h3>Dynamic Country Search</h3>
         <p>Selected &nbsp;&nbsp;<b>{{itemToString(selectedItem)}}</b></p>
-        <select-component id="country1" [placeholder]="placeholderCountries" [width]="width"
+        <murdock-select id="country1" [placeholder]="placeholderCountries" [width]="width"
             [(selectedItem)]="selectedItem" [debounce]="debounce" [disabled]="disabled" [limit]="limit"
-            [(search)]="searchValue" [searchFunction]="searchFunction" [itemToString]="itemToString" />
+            [(search)]="searchValueCountry" [searchFunction]="searchFunction" [itemToString]="itemToString" />
     </div>
     } @else {
 
     <div>
         <h3>Static Animal Search</h3>
         <p>Selected &nbsp;&nbsp;<b>{{animalToString(selectedAnimal)}}</b></p>
-        <select-component id="animal1" [placeholder]="placeholderAnimals" [width]="width" [items]="staticData"
+        <murdock-select id="animal1" [placeholder]="placeholderAnimals" [width]="width" [items]="staticData"
             [(selectedItem)]="selectedAnimal" [debounce]="debounce" [disabled]="disabled" [limit]="limit"
-            [(search)]="searchValue" [itemToString]="animalToString" />
+            [(search)]="searchValueAnimal" [itemToString]="animalToString" />
     </div>
     }
     <div class='data-controls'>
