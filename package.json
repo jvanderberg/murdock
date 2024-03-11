@@ -10,7 +10,8 @@
         "murdock-angular",
         "angular-examples",
         "vue-examples",
-        "react-examples"
+        "react-examples",
+        "murdock-custom-element"
     ],
     "scripts": {
         "build": "pnpm install && cd murdock-core && npm run build && cd ../murdock-react && npm run build && cd ../murdock-vue && npm run build && cd ../murdock-angular && npm run build",

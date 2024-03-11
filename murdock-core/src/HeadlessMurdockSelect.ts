@@ -1,5 +1,5 @@
 import { type SelectProps, type SelectState, type SelectResults } from './types.js';
-import { Hooks } from './index.js';
+import { HeadlessComponent, Hooks } from './index.js';
 import { useRunLater } from './useRunLater.js';
 
 /**
