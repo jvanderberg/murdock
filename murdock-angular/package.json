@@ -1,6 +1,6 @@
 {
     "name": "@murdock-ui/murdock-angular",
-    "version": "0.5.4",
+    "version": "0.5.10",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -9,6 +9,9 @@
         "test": "ng test",
         "lint": "ng lint"
     },
+    "files": [
+        "dist"
+    ],
     "private": false,
     "dependencies": {
         "@angular/animations": "^17.0.0",
