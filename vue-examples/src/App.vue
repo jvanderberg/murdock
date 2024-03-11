@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUpdate, onMounted, ref } from 'vue';
 import { faker } from '@faker-js/faker';
-import SelectComponent from '@murdock-ui/murdock-vue/select-component';
+import MurdockSelect from '@murdock-ui/murdock-vue/MurdockSelect';
 type Country = {
 	name: {
 		common: string;
@@ -112,7 +112,7 @@ const staticDataSize = ref(300);
 		<p>
 			Selected &nbsp;&nbsp;<b>{{ itemToString(selectedItem) }}</b>
 		</p>
-		<select-component
+		<MurdockSelect
 			id="country1"
 			:placeholder="placeholderCountries"
 			:width="width"
@@ -131,7 +131,7 @@ const staticDataSize = ref(300);
 		<p>
 			Selected &nbsp;&nbsp;<b>{{ animalToString(selectedAnimal) }}</b>
 		</p>
-		<select-component
+		<MurdockSelect
 			id="animal1"
 			:placeholder="placeholderAnimals"
 			:width="width"

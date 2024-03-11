@@ -229,7 +229,7 @@ importers:
   murdock-react:
     dependencies:
       '@murdock-ui/murdock-core':
-        specifier: ^0.5.7
+        specifier: ^0.5.8
         version: link:../murdock-core
       react:
         specifier: ^18.2.0
@@ -345,7 +345,7 @@ importers:
   react-examples:
     dependencies:
       '@murdock-ui/murdock-core':
-        specifier: 0.5.7
+        specifier: 0.5.8
         version: link:../murdock-core
       '@murdock-ui/murdock-react':
         specifier: 0.5.7
