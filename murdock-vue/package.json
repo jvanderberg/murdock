@@ -1,6 +1,6 @@
 {
     "name": "@murdock-ui/murdock-vue",
-    "version": "0.5.3",
+    "version": "0.5.8",
     "private": false,
     "type": "module",
     "files": [
@@ -14,10 +14,10 @@
             "require": null,
             "types": "./dist/murdock-vue.d.ts"
         },
-        "./select-component": {
-            "import": "./dist/select-component.js",
+        "./MurdockSelect": {
+            "import": "./dist/murdock-select.js",
             "require": null,
-            "types": "./dist/select-component.d.ts"
+            "types": "./dist/murdock-select.d.ts"
         }
     },
     "types": "./dist/murdock-vue.d.ts",

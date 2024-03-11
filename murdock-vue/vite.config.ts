@@ -14,7 +14,7 @@ const patchCssFiles: Plugin = {
 	writeBundle() {
 		const outDir = path.resolve('dist');
 
-		['select-component'].forEach((file) => {
+		['murdock-select'].forEach((file) => {
 			const filePath = path.resolve(outDir, file + '.js');
 			const content = fs.readFileSync(filePath, 'utf-8');
 			fs.writeFileSync(filePath, `import './${file}.css'\n${content}`);
@@ -33,7 +33,7 @@ export default defineConfig({
 		lib: {
 			entry: {
 				'murdock-vue': './src/index.ts',
-				'select-component': './src/SelectComponent.vue'
+				'murdock-select': './src/MurdockSelect.vue'
 			},
 			formats: ['es'],
 			fileName: () => '[name].js'

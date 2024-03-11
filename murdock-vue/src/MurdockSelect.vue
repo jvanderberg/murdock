@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T = unknown">
-import { HeadlessSelect as MKSelect, type SelectProps } from '@murdock-ui/murdock-core';
+import { HeadlessMurdockSelect as MKSelect, type SelectProps } from '@murdock-ui/murdock-core';
 import { onBeforeUpdate, onMounted, onUnmounted } from 'vue';
 import { useHeadlessComponent } from './index';
 const props = defineProps<SelectProps<T>>();
