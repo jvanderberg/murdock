@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-custom-element",
     "private": false,
-    "version": "0.5.12",
+    "version": "0.5.13",
     "type": "module",
     "files": [
         "dist"
@@ -12,10 +12,10 @@
         ".": {
             "import": "./dist/murdock.js",
             "require": "./dist/murdock.umd.cjs",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/murdock.d.ts"
         }
     },
-    "types": "./dist/index.d.ts",
+    "types": "./dist/murdock.d.ts",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
@@ -23,7 +23,7 @@
         "preview": "vite preview"
     },
     "peerDependencies": {
-        "@murdock-ui/murdock-core": "^0.5.8"
+        "@murdock-ui/murdock-core": "^0.5.9"
     },
     "dependencies": {
         "classnames": "^2.3.2",
