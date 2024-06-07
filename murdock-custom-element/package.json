@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-custom-element",
     "private": false,
-    "version": "0.5.11",
+    "version": "0.5.12",
     "type": "module",
     "files": [
         "dist"
@@ -28,7 +28,8 @@
     "dependencies": {
         "classnames": "^2.3.2",
         "preact": "^10.13.1",
-        "preact-custom-element": "^4.3.0"
+        "preact-custom-element": "^4.3.0",
+        "vite-plugin-dts": "^3.7.0"
     },
     "devDependencies": {
         "@preact/preset-vite": "^2.5.0",

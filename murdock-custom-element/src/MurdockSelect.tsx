@@ -46,7 +46,7 @@ function convertBoolean(props: Record<string, unknown>, keys: string[]): Record<
  * @param state {S} The State type. State is controlled by the component, and can only be changed by the component.
  * @returns {S} The state of the component as a function of its props and its own internal state.
  */
-export function useHeadlessComponent<P extends Record<string, unknown>, S extends Record<string, unknown>>(
+function useHeadlessComponent<P extends Record<string, unknown>, S extends Record<string, unknown>>(
     component: HeadlessComponent<P, S>,
     props: P
 ): S {
