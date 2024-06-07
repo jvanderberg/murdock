@@ -47,7 +47,7 @@ export function HeadlessMurdockSelect<T>(
 			'Cannot specify both items and searchFunction, either provide a static list of items, or a dynamic search function.'
 		);
 	}
-	if (props.items == undefined && props.search == undefined) {
+	if (props.items == undefined && props.searchFunction == undefined) {
 		throw new Error(
 			'Must specify either items or search, either provide a static list of items, or a dynamic search function.'
 		);
