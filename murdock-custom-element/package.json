@@ -12,10 +12,10 @@
         ".": {
             "import": "./dist/murdock.js",
             "require": "./dist/murdock.umd.cjs",
-            "types": "./dist/murdock.d.ts"
+            "types": "./murdock.d.ts"
         }
     },
-    "types": "./dist/murdock.d.ts",
+    "types": "./murdock.d.ts",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
