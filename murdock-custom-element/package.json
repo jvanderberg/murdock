@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-custom-element",
     "private": false,
-    "version": "0.5.16",
+    "version": "0.5.17",
     "type": "module",
     "files": [
         "dist"
@@ -9,7 +9,7 @@
     "main": "./dist/murdock.umd.cjs",
     "module": "./dist/murdock.js",
     "exports": {
-        ".": {
+        "./murdock": {
             "import": "./dist/murdock.js",
             "require": "./dist/murdock.umd.cjs",
             "types": "./dist/murdock.d.ts"
