@@ -1,7 +1,7 @@
 {
     "name": "@murdock-ui/murdock-custom-element",
     "private": false,
-    "version": "0.5.19",
+    "version": "0.5.20",
     "type": "module",
     "files": [
         "dist"

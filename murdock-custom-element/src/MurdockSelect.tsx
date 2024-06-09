@@ -139,5 +139,5 @@ export const MurdockSelect = <T,>(props: SelectProps<T>) => {
 };
 
 MurdockSelect.defaultProps = {};
-register(MurdockSelect, 'murdock-select', [], { shadow: false });
+register(MurdockSelect, 'murdock-select', []);
 
