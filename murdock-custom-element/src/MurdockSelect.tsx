@@ -139,5 +139,5 @@ export const MurdockSelect = <T,>(props: SelectProps<T>) => {
 };
 
 MurdockSelect.defaultProps = {};
-register(MurdockSelect, 'murdock-select', ['searchFunction', 'items', 'placeholder', 'debounce', 'search', 'setSearch', 'selectedItem', 'setSelectedItem', 'sort', 'itemToString', 'limit', 'width', 'overrideClassName', 'disabled', 'id']);
+register(MurdockSelect, 'murdock-select', [], { shadow: false });
 
