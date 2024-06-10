@@ -225,3 +225,29 @@ Child classes:
 
 The test harness/playground allows you to build and style a component, and also validates the bindings and implementations
 for that framework.
+
+# Building / Maintaining the libraries
+
+This section is more to memorialize maintenance tasks for me personally and is not generally applicable to consuming these packages.
+This repo uses pnmp for package management.
+
+## To install packages in a particular repo
+
+1. cd into the directory
+2. pnpm install package
+
+## To build an individual repo
+
+1. cd into the directory
+2. pnpm run build
+
+(note, npm will work fine here too)
+
+## To publish
+
+Each repo is published independently. You will need to authenticate with
+
+1. cd into the directory
+2. Edit package.json to bump the version
+3. git commit -m "New version"
+4. pnpm publish
